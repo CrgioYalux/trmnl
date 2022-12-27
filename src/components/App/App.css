@@ -1,0 +1,13 @@
+.App__Background {
+    --App__Background-gap: 1.25vh;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: var(--App__Background-gap);
+    padding: calc(var(--App__Background-gap) * 0.5);
+}
+
+.App__Terminal {
+    flex: 1 1 auto;
+}

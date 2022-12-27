@@ -1,0 +1,7 @@
+.Terminal {
+    width: 100%;
+
+    border-radius: var(--brand-border-radius);
+
+    background-color: var(--primary-color-l-high);
+}

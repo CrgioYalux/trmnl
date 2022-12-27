@@ -1,0 +1,81 @@
+.StatusBar {
+    width: 100%;
+    flex: 0 0 25px;
+
+    background-color: var(--primary-color-l-high);
+
+    opacity: .85;
+
+    border-radius: calc(var(--brand-border-radius) * 1);
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    --StatusBar-gap: 2.5px;
+
+    font-size: clamp(.75rem, 4vw, .9rem);
+}
+
+.StatusBar__box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: calc(var(--StatusBar-gap) * 1);
+
+    list-style: none;
+
+    flex: 1 1 auto;
+    height: 100%;
+
+    padding: calc(var(--StatusBar-gap) * 1) 0;
+
+    color: var(--secondary-color-l-low);
+}
+
+.StatusBar__item {
+    display: grid;
+    place-items: center;
+
+    height: 100%;
+    aspect-ratio: auto 1/1;
+
+    border-radius: 6px;
+
+    background-color: var(--primary-color-l-base);
+
+    line-height: 1;
+    font-size: 1em;
+    font-weight: 800;
+    padding: .15em;
+
+    user-select: none;
+    cursor: pointer;
+}
+
+.envs_item.--active {
+    border: 2px solid currentColor;
+}
+
+.StatusBar__envs_box > li:last-child {
+    margin-right: auto;
+}
+
+.StatusBar__envs_box > li:first-child {
+    margin-left: 10px;
+}
+
+.StatusBar__system_options_box > li:first-child {
+    margin-left: auto;
+}
+
+.StatusBar__system_options_box > li:last-child {
+    margin-right: 10px;
+}
+
+.StatusBar__datetime_box {
+    flex-shrink: 0;
+    color: var(--secondary-color-l-base);
+    gap: calc(var(--StatusBar-gap) * 2);
+}

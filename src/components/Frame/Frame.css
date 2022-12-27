@@ -1,0 +1,4 @@
+.Frame {
+    display: flex;
+    flex-direction: column;
+}
