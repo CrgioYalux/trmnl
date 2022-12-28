@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './StatusBar.css';
 
 interface StatusBarProps {
@@ -5,13 +6,20 @@ interface StatusBarProps {
 }
 
 export const StatusBar: React.FC<StatusBarProps> = ({ className = '' }) => {
+    const [activeEnv, setActiveEnv] = useState<number>(4);
+
     return (
         <div className={`StatusBar ${className}`}>
             <ul className='StatusBar__box StatusBar__envs_box'>
-                <li className='StatusBar__item envs_item'>1</li>
-                <li className='StatusBar__item envs_item'>2</li>
-                <li className='StatusBar__item envs_item'>3</li>
-                <li className='StatusBar__item envs_item --active'>4</li>
+                {[...Array(4).keys()].map((i) => {
+                    let n = i + 1;
+                    return (
+                        <li
+                            onClick={() => setActiveEnv(n)}
+                            className={`StatusBar__item envs_item ${(activeEnv === n) ? '--active' : '--inactive'}`}
+                        >{n}</li>
+                    )
+                })}
             </ul>
             <p className='StatusBar__box StatusBar__datetime_box'>
                 <span>Mon, Dec 26</span><span>04:04:04</span>
