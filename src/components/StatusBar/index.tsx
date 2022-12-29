@@ -1,12 +1,36 @@
-import { useState } from 'react';
 import './StatusBar.css';
+
+import { useState, useEffect } from 'react';
+import { getDateString, getTimeString } from './utils';
 
 interface StatusBarProps {
     className?: string;
 }
 
+type DateTime = {
+    date: string,
+    time: string
+}
+
 export const StatusBar: React.FC<StatusBarProps> = ({ className = '' }) => {
     const [activeEnv, setActiveEnv] = useState<number>(4);
+    const [{ date, time }, setDateTime] = useState<DateTime>(() => (
+        {
+            date: getDateString(),
+            time: getTimeString()
+        }
+    ));
+
+    useEffect(() => {
+        const intervalDateTime = setInterval(() => {
+            setDateTime({
+                date: getDateString(),
+                time: getTimeString()
+            });
+
+        }, 1000);
+        return () => clearInterval(intervalDateTime);
+    }, []);
 
     return (
         <div className={`StatusBar ${className}`}>
@@ -23,7 +47,7 @@ export const StatusBar: React.FC<StatusBarProps> = ({ className = '' }) => {
                 })}
             </ul>
             <p className='StatusBar__box StatusBar__datetime_box'>
-                <span>Mon, Dec 26</span><span>04:04:04</span>
+                <span>{date}</span><span>{time}</span>
             </p>
             <ul className='StatusBar__box StatusBar__system_options_box'>
                 <li className='StatusBar__item system_options_item'>En</li>

@@ -11,8 +11,8 @@ interface PlasmaBackgroundProps {
 
 const defaultPlasmaBackgroundProps = {
     className: '',
-    colors: ['rgb(82,25,58)','rgb(81,15,59)','rgb(92,21,18)'],
-    duration: 8,
+    colors: ['rgb(222,25,58)','rgb(81,15,59)','rgb(92,21,192)'],
+    duration: 16,
     areaSize: 4
 };
 
