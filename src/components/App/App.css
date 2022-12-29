@@ -4,10 +4,21 @@
     display: flex;
     flex-direction: column;
 
+    width: 100%;
+    height: 100%;
+
     gap: var(--App__Background-gap);
     padding: calc(var(--App__Background-gap) * 0.5);
 }
 
 .App__Terminal {
     flex: 1 1 auto;
+
+    opacity: .75;
+    border: 1px solid var(--brand-color-l-highest) !important;
+}
+
+.App__StatusBar {
+    opacity: .75;
+    border: 1px solid var(--brand-color-l-highest) !important;
 }

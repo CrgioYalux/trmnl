@@ -15,6 +15,7 @@ export const StatusBar: React.FC<StatusBarProps> = ({ className = '' }) => {
                     let n = i + 1;
                     return (
                         <li
+                            key={n}
                             onClick={() => setActiveEnv(n)}
                             className={`StatusBar__item envs_item ${(activeEnv === n) ? '--active' : '--inactive'}`}
                         >{n}</li>
