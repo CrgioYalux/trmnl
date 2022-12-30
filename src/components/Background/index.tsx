@@ -1,5 +1,6 @@
 import './Background.css';
 
+import { useState } from 'react';
 import { PlasmaBackground } from './PlasmaBackground';
 
 interface BackgroundProps {
@@ -8,9 +9,10 @@ interface BackgroundProps {
 }
 
 export const Background: React.FC<BackgroundProps> = ({ className = '', children }) => {
+    const [usingPlasmaBackground, setUsingPlasmaBackground] = useState<boolean>(true);
     return (
-        <div className={`Background ${className}`} >
-            <PlasmaBackground />
+        <div className={`Background ${className}`}>
+            {usingPlasmaBackground && <PlasmaBackground />}
             {children}
         </div>
     );

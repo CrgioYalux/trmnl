@@ -1,6 +1,6 @@
 import './Terminal.css';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { runCommand, CommandReturn } from './utils';
 
 const promptSymbol = '~# ';
@@ -28,7 +28,7 @@ export const Terminal: React.FC<{ className?: string }> = ({ className = '' }) =
                 setLogs((prev) => [...prev, log]);
                 setValue(promptSymbol);
             })}
-            onClick={(event) => {
+            onClick={(event: React.SyntheticEvent) => {
                 const form = event.target as HTMLFormElement & {
                     commandInput: HTMLInputElement
                 }
