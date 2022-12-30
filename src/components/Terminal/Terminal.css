@@ -5,29 +5,33 @@
 
     background-color: var(--primary-color-l-high);
 
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
 
     --Terminal-gap: 5px;
 
     padding: var(--Terminal-gap);
+    gap: var(--Terminal-gap);
 
+    list-style: none;
 }
 
-.Terminal > textarea {
-    margin-top: 0;
-    margin-bottom: auto;
-
-    height: 100%;
-    width: 100%;
-
+.Terminal > input {
     background-color: transparent;
 
     border: 0;
     outline: 0;
 
-    border-radius: calc(var(--brand-border-radius) - var(--Terminal-gap));
-
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     font-size: clamp(.8rem, 4vw, 1rem);
+
+    color: var(--brand-color-l-highest);
+}
+
+.Terminal__command_log {
+    margin-left: calc(var(--Terminal-gap) * 5);
+}
+
+.Terminal__command_log.--unsuccess { 
+    color: red;
 }
