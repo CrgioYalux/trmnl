@@ -51,9 +51,10 @@
 
     user-select: none;
     cursor: pointer;
+    border: 2px solid var(--primary-color-l-base);
 }
 
-.envs_item.--active {
+.StatusBar__item.--active {
     border: 2px solid currentColor;
 }
 

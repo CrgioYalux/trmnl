@@ -1,6 +1,6 @@
 import './Background.css';
 
-import { useState } from 'react';
+import { useSystemOptions } from '../../providers/SystemOptions';
 import { PlasmaBackground } from './PlasmaBackground';
 
 interface BackgroundProps {
@@ -9,10 +9,10 @@ interface BackgroundProps {
 }
 
 export const Background: React.FC<BackgroundProps> = ({ className = '', children }) => {
-    const [usingPlasmaBackground, setUsingPlasmaBackground] = useState<boolean>(true);
+    const { plasmaBackgroundVisibility } = useSystemOptions();
     return (
         <div className={`Background ${className}`}>
-            {usingPlasmaBackground && <PlasmaBackground />}
+            {plasmaBackgroundVisibility && <PlasmaBackground />}
             {children}
         </div>
     );

@@ -2,6 +2,7 @@ import './StatusBar.css';
 
 import { useState, useEffect } from 'react';
 import { getDateString, getTimeString } from './utils';
+import { useSystemOptions } from '../../providers/SystemOptions';
 
 interface StatusBarProps {
     className?: string;
@@ -20,6 +21,8 @@ export const StatusBar: React.FC<StatusBarProps> = ({ className = '' }) => {
             time: getTimeString()
         }
     ));
+    const { plasmaBackgroundVisibility, switchPlasmaBackgroundVisibility } = useSystemOptions();
+
 
     useEffect(() => {
         const intervalDateTime = setInterval(() => {
@@ -36,7 +39,7 @@ export const StatusBar: React.FC<StatusBarProps> = ({ className = '' }) => {
         <div className={`StatusBar ${className}`}>
             <ul className='StatusBar__box StatusBar__envs_box'>
                 {[...Array(4).keys()].map((i) => {
-                    let n = i + 1;
+                    const n = i + 1;
                     return (
                         <li
                             key={n}
@@ -50,6 +53,10 @@ export const StatusBar: React.FC<StatusBarProps> = ({ className = '' }) => {
                 <span>{date}</span><span>{time}</span>
             </p>
             <ul className='StatusBar__box StatusBar__system_options_box'>
+                <li 
+                    onClick={() => switchPlasmaBackgroundVisibility()}
+                    className={`StatusBar__item system_options_item ${(plasmaBackgroundVisibility) ? '--active' : '--inactive'}`}
+                >bg</li>
                 <li className='StatusBar__item system_options_item'>En</li>
                 <li className='StatusBar__item system_options_item'>Q</li>
             </ul>
