@@ -1,7 +1,6 @@
 import { createContext, useContext, useState } from "react";
-
-enum Theme { Dark, Light }
-enum Lang { EN, ES }
+import { Theme, getSystemTheme, applyTheme } from './theme';
+import { Lang } from "./lang";
 
 interface SystemOptionsContext {
     switchPlasmaBackgroundVisibility: () => void;
@@ -32,7 +31,11 @@ interface SystemOptionsProviderProps {
 };
 
 export const SystemOptionsProvider: React.FC<SystemOptionsProviderProps> = ({ children }) => {
-    const [theme, setTheme] = useState<Theme>(Theme.Dark);
+    const [theme, setTheme] = useState<Theme>(() => {
+        const theme = getSystemTheme();
+        applyTheme(theme);
+        return theme;
+    });
     const [lang, setLang] = useState<Lang>(Lang.EN);
     const [plasmaBackgroundVisibility, setPlasmaBackgroundVisibility] = useState<boolean>(true);
 
@@ -45,7 +48,13 @@ export const SystemOptionsProvider: React.FC<SystemOptionsProviderProps> = ({ ch
     };
 
     const switchTheme = () => {
-        setTheme((prev) => prev === Theme.Dark ? Theme.Light : Theme.Dark);
+        setTheme(
+            (prev) => {
+                const updated = prev === Theme.Dark ? Theme.Light : Theme.Dark;
+                applyTheme(updated);
+                return updated;
+            }
+        );
     };
 
     const value: SystemOptionsContext = {
@@ -56,7 +65,7 @@ export const SystemOptionsProvider: React.FC<SystemOptionsProviderProps> = ({ ch
         theme,
 
         switchLang,
-        lang
+        lang,
     };
 
     return (

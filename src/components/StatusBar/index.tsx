@@ -3,6 +3,10 @@ import './StatusBar.css';
 import { useState, useEffect } from 'react';
 import { getDateString, getTimeString } from './utils';
 import { useSystemOptions } from '../../providers/SystemOptions';
+import { Theme } from '../../providers/SystemOptions/theme';
+
+import { SunIcon } from '../Icons/SunIcon';
+import { MoonIcon } from '../Icons/MoonIcon';
 
 interface StatusBarProps {
     className?: string;
@@ -21,7 +25,10 @@ export const StatusBar: React.FC<StatusBarProps> = ({ className = '' }) => {
             time: getTimeString()
         }
     ));
-    const { plasmaBackgroundVisibility, switchPlasmaBackgroundVisibility } = useSystemOptions();
+    const {
+        plasmaBackgroundVisibility, switchPlasmaBackgroundVisibility,
+        theme, switchTheme
+    } = useSystemOptions();
 
 
     useEffect(() => {
@@ -54,10 +61,16 @@ export const StatusBar: React.FC<StatusBarProps> = ({ className = '' }) => {
             </p>
             <ul className='StatusBar__box StatusBar__system_options_box'>
                 <li 
-                    onClick={() => switchPlasmaBackgroundVisibility()}
                     className={`StatusBar__item system_options_item ${(plasmaBackgroundVisibility) ? '--active' : '--inactive'}`}
+                    onClick={() => switchPlasmaBackgroundVisibility()}
                 >bg</li>
                 <li className='StatusBar__item system_options_item'>En</li>
+                <li
+                    className='StatusBar__item system_options_item'
+                    onClick={() => switchTheme()}
+                >
+                {theme === Theme.Dark ? <SunIcon /> : <MoonIcon />}
+                </li>
                 <li className='StatusBar__item system_options_item'>Q</li>
             </ul>
         </div>

@@ -15,7 +15,6 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
   font-synthesis: none;
@@ -25,7 +24,7 @@
   -webkit-text-size-adjust: 100%;
 }
 
-/* Vars */
+/* Vars  */
 :root {
   /* Colors */
   /* Brand color */
@@ -75,6 +74,72 @@
     calc(var(--brand-color-lightness) * 1% + 30%)
   );
 
+  /* Global values */
+  --brand-border-radius: 16px;
+}
+
+
+:root, :root.light {
+  /* Primary color */
+  --primary-color-hue: 0;
+  --primary-color-saturation: 0;
+  --primary-color-lightness: 100;
+
+  --primary-color-l-base: hsl(
+    var(--primary-color-hue),
+    calc(var(--primary-color-saturation) * 1% + 0%),
+    calc(var(--primary-color-lightness) * 1% - 0%)
+  );
+
+  --primary-color-l-high: hsl(
+    var(--primary-color-hue),
+    calc(var(--primary-color-saturation) * 1% + 0%),
+    calc(var(--primary-color-lightness) * 1% - 15%)
+  );
+
+  --primary-color-l-higher: hsl(
+    var(--primary-color-hue),
+    calc(var(--primary-color-saturation) * 1% + 0%),
+    calc(var(--primary-color-lightness) * 1% - 30%)
+  );
+
+  --primary-color-l-highest: hsl(
+    var(--primary-color-hue),
+    calc(var(--primary-color-saturation) * 1% + 0%),
+    calc(var(--primary-color-lightness) * 1% - 45%)
+  );
+
+  /* Secondary color */
+  --secondary-color-hue: 0;
+  --secondary-color-saturation: 0;
+  --secondary-color-lightness: 0;
+
+  --secondary-color-l-base: hsl(
+    var(--secondary-color-hue),
+    calc(var(--secondary-color-saturation) * 1% + 0%),
+    calc(var(--secondary-color-lightness) * 1% + 0%)
+  );
+
+  --secondary-color-l-low: hsl(
+    var(--secondary-color-hue),
+    calc(var(--secondary-color-saturation) * 1% + 0%),
+    calc(var(--secondary-color-lightness) * 1% + 15%)
+  );
+
+  --secondary-color-l-lower: hsl(
+    var(--secondary-color-hue),
+    calc(var(--secondary-color-saturation) * 1% + 0%),
+    calc(var(--secondary-color-lightness) * 1% + 30%)
+  );
+
+  --secondary-color-l-lowest: hsl(
+    var(--secondary-color-hue),
+    calc(var(--secondary-color-saturation) * 1% + 0%),
+    calc(var(--secondary-color-lightness) * 1% + 45%)
+  );
+}
+
+:root.dark {
   /* Primary color */
   --primary-color-hue: 0;
   --primary-color-saturation: 0;
@@ -132,9 +197,68 @@
     calc(var(--secondary-color-saturation) * 1% + 0%),
     calc(var(--secondary-color-lightness) * 1% + -45%)
   );
+}
 
-  /* Global values */
-  --brand-border-radius: 16px;
+@media (prefers-color-scheme: light) {
+  :root {
+    /* Primary color */
+    --primary-color-hue: 0;
+    --primary-color-saturation: 0;
+    --primary-color-lightness: 0;
+
+    --primary-color-l-base: hsl(
+      var(--primary-color-hue),
+      calc(var(--primary-color-saturation) * 1% + 0%),
+      calc(var(--primary-color-lightness) * 1% + 0%)
+    );
+
+    --primary-color-l-high: hsl(
+      var(--primary-color-hue),
+      calc(var(--primary-color-saturation) * 1% + 0%),
+      calc(var(--primary-color-lightness) * 1% + 15%)
+    );
+
+    --primary-color-l-higher: hsl(
+      var(--primary-color-hue),
+      calc(var(--primary-color-saturation) * 1% + 0%),
+      calc(var(--primary-color-lightness) * 1% + 30%)
+    );
+
+    --primary-color-l-highest: hsl(
+      var(--primary-color-hue),
+      calc(var(--primary-color-saturation) * 1% + 0%),
+      calc(var(--primary-color-lightness) * 1% + 45%)
+    );
+
+    /* Secondary color */
+    --secondary-color-hue: 0;
+    --secondary-color-saturation: 0;
+    --secondary-color-lightness: 100;
+
+    --secondary-color-l-base: hsl(
+      var(--secondary-color-hue),
+      calc(var(--secondary-color-saturation) * 1% + 0%),
+      calc(var(--secondary-color-lightness) * 1% + 0%)
+    );
+
+    --secondary-color-l-low: hsl(
+      var(--secondary-color-hue),
+      calc(var(--secondary-color-saturation) * 1% + 0%),
+      calc(var(--secondary-color-lightness) * 1% + -15%)
+    );
+
+    --secondary-color-l-lower: hsl(
+      var(--secondary-color-hue),
+      calc(var(--secondary-color-saturation) * 1% + 0%),
+      calc(var(--secondary-color-lightness) * 1% + -30%)
+    );
+
+    --secondary-color-l-lowest: hsl(
+      var(--secondary-color-hue),
+      calc(var(--secondary-color-saturation) * 1% + 0%),
+      calc(var(--secondary-color-lightness) * 1% + -45%)
+    );
+  }
 }
 
 body {

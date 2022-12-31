@@ -25,11 +25,12 @@
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     font-size: clamp(.8rem, 4vw, 1rem);
 
-    color: var(--brand-color-l-highest);
+    color: var(--brand-color-l-high);
 }
 
 .Terminal__command_log {
     margin-left: calc(var(--Terminal-gap) * 5);
+    color: var(--secondary-color-l-base);
 }
 
 .Terminal__command_log.--unsuccess { 
