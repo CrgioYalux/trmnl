@@ -1,9 +1,10 @@
 import './StatusBar.css';
 
-import { useState, useEffect } from 'react';
-import { getDateString, getTimeString } from './utils';
+import { useState } from 'react';
+import { DateTime, getNowDateTime } from './utils';
 import { useSystemOptions } from '../../providers/SystemOptions';
 import { Theme } from '../../providers/SystemOptions/theme';
+import { updateDateTime } from './updateDateTime';
 
 import { SunIcon } from '../Icons/SunIcon';
 import { MoonIcon } from '../Icons/MoonIcon';
@@ -12,46 +13,29 @@ interface StatusBarProps {
     className?: string;
 }
 
-type DateTime = {
-    date: string,
-    time: string
-}
+const NUMOF_ENVS = 4;
+const ENVS = [...Array(NUMOF_ENVS).keys()].map((e) => e + 1);
 
 export const StatusBar: React.FC<StatusBarProps> = ({ className = '' }) => {
-    const [activeEnv, setActiveEnv] = useState<number>(4);
-    const [{ date, time }, setDateTime] = useState<DateTime>(() => (
-        {
-            date: getDateString(),
-            time: getTimeString()
-        }
-    ));
+    const [activeEnv, setActiveEnv] = useState<number>(NUMOF_ENVS);
+    const [{ date, time }, setDateTime] = useState<DateTime>(getNowDateTime);
     const {
         plasmaBackgroundVisibility, switchPlasmaBackgroundVisibility,
         theme, switchTheme
     } = useSystemOptions();
 
-
-    useEffect(() => {
-        const intervalDateTime = setInterval(() => {
-            setDateTime({
-                date: getDateString(),
-                time: getTimeString()
-            });
-
-        }, 1000);
-        return () => clearInterval(intervalDateTime);
-    }, []);
+    updateDateTime(setDateTime);
 
     return (
         <div className={`StatusBar ${className}`}>
             <ul className='StatusBar__box StatusBar__envs_box'>
-                {[...Array(4).keys()].map((i) => {
-                    const n = i + 1;
+                {ENVS.map((n) => {
                     return (
                         <li
                             key={n}
                             onClick={() => setActiveEnv(n)}
                             className={`StatusBar__item envs_item ${(activeEnv === n) ? '--active' : '--inactive'}`}
+                            tabIndex={n}
                         >{n}</li>
                     )
                 })}
@@ -63,15 +47,23 @@ export const StatusBar: React.FC<StatusBarProps> = ({ className = '' }) => {
                 <li 
                     className={`StatusBar__item system_options_item ${(plasmaBackgroundVisibility) ? '--active' : '--inactive'}`}
                     onClick={() => switchPlasmaBackgroundVisibility()}
+                    tabIndex={NUMOF_ENVS + 1}
                 >bg</li>
-                <li className='StatusBar__item system_options_item'>En</li>
+                <li 
+                    className='StatusBar__item system_options_item'
+                    tabIndex={NUMOF_ENVS + 2}
+                >En</li>
                 <li
                     className='StatusBar__item system_options_item'
                     onClick={() => switchTheme()}
+                    tabIndex={NUMOF_ENVS + 3}
                 >
                 {theme === Theme.Dark ? <SunIcon /> : <MoonIcon />}
                 </li>
-                <li className='StatusBar__item system_options_item'>Q</li>
+                <li 
+                    className='StatusBar__item system_options_item'
+                    tabIndex={NUMOF_ENVS + 4}
+                >Q</li>
             </ul>
         </div>
     );

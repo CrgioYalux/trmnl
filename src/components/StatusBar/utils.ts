@@ -23,6 +23,11 @@ enum YearMonths {
     'December' = 12
 }
 
+type DateTime = {
+    date: string,
+    time: string
+}
+
 function getDateString(): string {
     const now = new Date();
     
@@ -46,7 +51,15 @@ function getTimeString(): string {
     return `${hours}:${minutes}:${seconds}`;
 }
 
-export {
-    getTimeString,
-    getDateString,
+function getNowDateTime(): DateTime {
+    return {
+        date: getDateString(),
+        time: getTimeString()
+    }
 }
+
+export {
+    getNowDateTime,
+    type DateTime
+}
+
