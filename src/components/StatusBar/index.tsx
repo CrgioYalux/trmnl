@@ -3,7 +3,6 @@ import './StatusBar.css';
 import { useState } from 'react';
 import { DateTime, getNowDateTime } from './utils';
 import { useSystemOptions } from '../../providers/SystemOptions';
-import { Theme } from '../../providers/SystemOptions/theme';
 import { updateDateTime } from './updateDateTime';
 
 import { SunIcon } from '../Icons/SunIcon';
@@ -58,7 +57,7 @@ export const StatusBar: React.FC<StatusBarProps> = ({ className = '' }) => {
                     onClick={() => switchTheme()}
                     tabIndex={NUMOF_ENVS + 3}
                 >
-                {theme === Theme.Dark ? <SunIcon /> : <MoonIcon />}
+                {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
                 </li>
                 <li 
                     className='StatusBar__item system_options_item'

@@ -2,13 +2,10 @@ import { useState } from 'react';
 import { command } from './commands';
 import { sliceFirstWord } from './utils';
 
-enum TerminalCommand {
-    help = 'help',
-    cd = 'cd',
-    ls = 'ls',
-    pwd = 'pwd',
-    neofetch = 'neofetch'
-}
+const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch'] as const;
+
+type TerminalCommand = typeof TerminalCommands[number];
+
 interface Command {
     type: TerminalCommand;
     args: string[];
@@ -41,17 +38,17 @@ export function useTerminal(): useTerminalState {
     const execCommand = ({ type, args }: Command) => {
         // errors should be handled here, not in each command definition
         switch (type) {
-            case TerminalCommand.cd:
+            case 'cd':
                 command.cd(args, setActiveLocation);
                 return {
                     error: false,
                     msg: ``,
                     logCount
                 }
-            case TerminalCommand.ls:
-            case TerminalCommand.pwd:
-            case TerminalCommand.help:
-            case TerminalCommand.neofetch:
+            case 'help':
+            case 'ls':
+            case 'pwd':
+            case 'neofetch':
             default:
                 return {
                     error: false,
@@ -67,10 +64,10 @@ export function useTerminal(): useTerminalState {
         const { firstWord, rest } = sliceFirstWord(input);
         const args = rest === null ? [] : rest.split(' ');
 
-        if (Object.values(TerminalCommand).find((v) => firstWord === v)) {
+        if (TerminalCommands.find((c) => c === firstWord)) {
             const command: Command = {
                 type: firstWord as TerminalCommand,
-                args
+                args,
             };
 
             return execCommand(command);

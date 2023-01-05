@@ -1,11 +1,13 @@
-export enum Theme { Dark = 'dark', Light = 'light' }
+const Themes = ["dark", "light"] as const;
+
+export type Theme = typeof Themes[number];
 
 export function getSystemTheme(): Theme {
     if (
         window.matchMedia &&
         window.matchMedia('(prefers-color-scheme: dark)').matches
-    ) return Theme.Dark;
-    return Theme.Light;
+    ) return 'dark';
+    return 'light';
 }
 
 export function applyTheme(theme: Theme) {

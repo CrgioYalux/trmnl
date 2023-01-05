@@ -18,10 +18,10 @@ const SystemOptionsContext = createContext<SystemOptionsContext>({
     plasmaBackgroundVisibility: true,
 
     switchTheme: () => {},
-    theme: Theme.Dark,
+    theme: 'dark',
 
     switchLang: () => {},
-    lang: Lang.EN
+    lang: 'EN',
 });
 
 export const useSystemOptions = () => useContext<SystemOptionsContext>(SystemOptionsContext);
@@ -36,7 +36,7 @@ export const SystemOptionsProvider: React.FC<SystemOptionsProviderProps> = ({ ch
         applyTheme(theme);
         return theme;
     });
-    const [lang, setLang] = useState<Lang>(Lang.EN);
+    const [lang, setLang] = useState<Lang>('EN');
     const [plasmaBackgroundVisibility, setPlasmaBackgroundVisibility] = useState<boolean>(false);
 
     const switchPlasmaBackgroundVisibility = () => {
@@ -44,13 +44,13 @@ export const SystemOptionsProvider: React.FC<SystemOptionsProviderProps> = ({ ch
     };
 
     const switchLang = () => {
-        setLang((prev) => prev === Lang.EN ? Lang.ES : Lang.EN);
+        setLang((prev) => prev === 'EN' ? 'ES' : 'EN');
     };
 
     const switchTheme = () => {
         setTheme(
             (prev) => {
-                const updated = prev === Theme.Dark ? Theme.Light : Theme.Dark;
+                const updated = prev === 'dark' ? 'light' : 'dark';
                 applyTheme(updated);
                 return updated;
             }

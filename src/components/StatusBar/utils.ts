@@ -1,41 +1,24 @@
-enum WeekDays {
-    'Monday' = 1,
-    'Tuesday' = 2,
-    'Wednesday' = 3,
-    'Thursday' = 4,
-    'Friday' = 5,
-    'Satuday' = 6,
-    'Sunday' = 7,
-}
+const WeekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as const;
 
-enum YearMonths {
-    'January' = 1,
-    'February' = 2,
-    'March' = 3,
-    'April' = 4,
-    'May' = 5,
-    'June' = 6,
-    'July' = 7,
-    'August' = 8,
-    'September' = 9,
-    'October' = 10,
-    'November' = 11,
-    'December' = 12
-}
+type WeekDay = typeof WeekDays[number];
+
+const YearMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as const;
+
+type YearMonth = typeof YearMonths[number];
 
 type DateTime = {
-    date: string,
-    time: string
+    date: string;
+    time: string;
 }
 
 function getDateString(): string {
     const now = new Date();
     
-    const weekDay = now.getDay();
-    const month = now.getMonth() + 1;
+    const weekDay: WeekDay = WeekDays[now.getDay() - 1];
+    const month: YearMonth = YearMonths[now.getMonth()];
     const day = now.getDate();
 
-    return `${WeekDays[weekDay].slice(0, 3)}, ${YearMonths[month].slice(0, 3)} ${day}`;
+    return `${weekDay.slice(0, 3)}, ${month.slice(0, 3)} ${day}`;
 }
 
 

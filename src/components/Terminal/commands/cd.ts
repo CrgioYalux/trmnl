@@ -11,12 +11,6 @@ type DataType = 'file' | 'directory';
 *   type: 'file', // : DataType
 * */
 
-function cd1(args: string[], setter: (state: string) => void) {
-    const where = args[0] ?? '~';
-
-    setter(where);
-}
-
 function cd(args: string[], setter: React.Dispatch<React.SetStateAction<string>>) {
     const where = args[0] ?? '~';
 
