@@ -36,9 +36,8 @@ const Logs: React.FC<{ logs: CommandReturn[] }> = ({ logs }) => {
 
 
 export const Terminal: React.FC<{ className?: string }> = ({ className = '' }) => {
-    const { interpretInput, activeLocation } = useTerminal();
+    const { interpretInput, activeLocation, logs } = useTerminal();
 
-    const [logs, setLogs] = useState<CommandReturn[]>([]);
     const [value, setValue] = useState<string>('');
     const [prompt, setPrompt] = useState<string>(() => createPrompt(activeLocation));
 
@@ -59,10 +58,8 @@ export const Terminal: React.FC<{ className?: string }> = ({ className = '' }) =
 
         const commandInputValue = value.slice(prompt.length);
 
-        const log = interpretInput(commandInputValue);
+        interpretInput(commandInputValue);
     
-        setLogs((prev) => [...prev, log]);
-
         setValue(setInput('', prompt));
         form.commandInput.focus();
     };
@@ -72,7 +69,7 @@ export const Terminal: React.FC<{ className?: string }> = ({ className = '' }) =
             commandInput: HTMLInputElement
         }
         form.commandInput.focus();
-    }
+    };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setValue(setInput(event.target.value, prompt));
 
