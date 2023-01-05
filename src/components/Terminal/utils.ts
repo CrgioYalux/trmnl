@@ -1,55 +1,25 @@
-enum TerminalCommand {
-    help = 'help',
-    cd = 'cd',
-    ls = 'ls',
-    pwd = 'pwd',
-    neofetch = 'neofetch'
-}
-
-type CommandReturn = {
-    error: boolean,
-    msg: string,
-}
-
 function sliceFirstWord(sentence: string) {
-    const firstSpaceIndex = sentence.indexOf(' ');
-    const firstWord = firstSpaceIndex === -1 ? sentence : sentence.slice(0, firstSpaceIndex);
+    const trimmed = sentence.trim();
+    const firstSpaceIndex = trimmed.indexOf(' ');
 
-    return firstWord;
-}
-
-function interpretCommand(command: TerminalCommand) {
-    switch (command) {
-        case TerminalCommand.cd:
-        case TerminalCommand.ls:
-        case TerminalCommand.pwd:
-        case TerminalCommand.help:
-        case TerminalCommand.neofetch:
-        default:
-            return {
-                error: false,
-                msg: `ran \`${command}\` command`
-            }
-    }
-}
-
-function runCommand(command: string): CommandReturn {
-    const firstWord = sliceFirstWord(command);
-
-    if (Object.values(TerminalCommand).find((v) => firstWord === v)) {
-        const reqCommand = firstWord as TerminalCommand;
-        const commandReturn = interpretCommand(reqCommand);
-        return commandReturn;
-    }
+    if (firstSpaceIndex !== -1)
+        return {
+            firstWord: trimmed.slice(0, firstSpaceIndex),
+            rest: trimmed.slice(firstSpaceIndex).trim(),
+        }
 
     return {
-        error: true,
-        msg: `\`${firstWord}\`: Unknown command`
-    }
+        firstWord: trimmed,
+        rest: null,
+    };
 }
 
+const createPrompt = (location: string, user: string = 'usr', symbol: string = '$') => `${user}:${location}${symbol}`;
+
+const setInput = (value: string, prompt: string) => `${prompt}${value.slice(prompt.length)}`;
+
 export {
-    interpretCommand,
-    runCommand,
-    type CommandReturn      
+    sliceFirstWord,
+    createPrompt,
+    setInput
 }

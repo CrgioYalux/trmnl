@@ -37,7 +37,7 @@ export const SystemOptionsProvider: React.FC<SystemOptionsProviderProps> = ({ ch
         return theme;
     });
     const [lang, setLang] = useState<Lang>(Lang.EN);
-    const [plasmaBackgroundVisibility, setPlasmaBackgroundVisibility] = useState<boolean>(true);
+    const [plasmaBackgroundVisibility, setPlasmaBackgroundVisibility] = useState<boolean>(false);
 
     const switchPlasmaBackgroundVisibility = () => {
         setPlasmaBackgroundVisibility((prev) => !prev);
