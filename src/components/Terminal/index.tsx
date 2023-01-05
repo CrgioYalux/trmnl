@@ -22,14 +22,16 @@ const TerminalInput: React.FC<TerminalInputProps> = ({ value, onChange }) => {
 }
 
 const Logs: React.FC<{ logs: CommandReturn[] }> = ({ logs }) => {
-    return <>
-        {logs.map(({ msg, error, logCount }) => !msg.length ? <></> : (
-            <li 
-                key={logCount}
+    const logsList = logs
+        .filter(({ msg }) => msg.length > 0)
+        .map(({ msg, error, logCount}) => 
+            <li
                 className={`Terminal__command_log ${error ? '--unsuccess' : '-success'}`}
-            >{msg}</li> 
-        ))}
-    </>
+                key={logCount}
+            >{msg}</li>
+        );
+
+    return <>{logsList}</>;
 }
 
 
@@ -81,8 +83,7 @@ export const Terminal: React.FC<{ className?: string }> = ({ className = '' }) =
             onClick={handleClick}
         >
             <Logs logs={logs} />
-            <TerminalInput 
-                value={value}
+            <TerminalInput value={value}
                 onChange={handleChange}
             />
         </form>

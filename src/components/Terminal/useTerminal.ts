@@ -1,10 +1,6 @@
 import { useState } from 'react';
-import { command } from './commands';
+import { command, TerminalCommand, TerminalCommands } from './commands';
 import { sliceFirstWord } from './utils';
-
-const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch'] as const;
-
-type TerminalCommand = typeof TerminalCommands[number];
 
 interface Command {
     type: TerminalCommand;
@@ -35,6 +31,8 @@ export function useTerminal(): useTerminalState {
     const [busy, setBusy] = useState<boolean>(false);
     const [logCount, setLogCount] = useState<number>(0);
 
+    // save on this component the logs
+
     const execCommand = ({ type, args }: Command) => {
         // errors should be handled here, not in each command definition
         switch (type) {
@@ -45,10 +43,28 @@ export function useTerminal(): useTerminalState {
                     msg: ``,
                     logCount
                 }
-            case 'help':
-            case 'ls':
             case 'pwd':
+                return {
+                    error: false,
+                    msg: activeLocation,
+                    logCount
+                }
+            case 'clear':
+                // when I'm able to manage logs, I'll just have to pop all logs
+                // from the log array state
+                return {
+                    error: false,
+                    msg: ``,
+                    logCount
+                }
             case 'neofetch':
+            case 'help':
+                return {
+                    error: false,
+                    msg: TerminalCommands.join(' '),
+                    logCount
+                }
+            case 'ls':
             default:
                 return {
                     error: false,
