@@ -1,4 +1,4 @@
-const WeekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as const;
+const WeekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as const;
 
 type WeekDay = typeof WeekDays[number];
 
@@ -14,7 +14,7 @@ type DateTime = {
 function getDateString(): string {
     const now = new Date();
     
-    const weekDay: WeekDay = WeekDays[now.getDay() - 1];
+    const weekDay: WeekDay = WeekDays[now.getDay()];
     const month: YearMonth = YearMonths[now.getMonth()];
     const day = now.getDate();
 
