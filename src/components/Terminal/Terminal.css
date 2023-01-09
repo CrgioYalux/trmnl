@@ -29,7 +29,6 @@
 }
 
 .Terminal__command_log {
-    /* margin-left: calc(var(--Terminal-gap) * 5); */
     color: var(--secondary-color-l-base);
 }
 

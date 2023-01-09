@@ -25,10 +25,21 @@ const Logs: React.FC<{ logs: CommandReturn[] }> = ({ logs }) => {
     const logsList = logs
         .filter(({ msg }) => msg.length > 0)
         .map(({ msg, error, logCount}) => 
-            <li
-                className={`Terminal__command_log ${error ? '--unsuccess' : '-success'}`}
-                key={logCount}
-            >{msg}</li>
+            typeof msg === 'string' 
+            ? (
+                <pre
+                    className={`Terminal__command_log ${error ? '--unsuccess' : '--success'}`}
+                    key={logCount}
+                >{msg}</pre>
+            )
+            : (
+                msg.map((mi, i) => (
+                    <pre
+                        className={`Terminal__command_log ${error ? '--unsuccess' : '--success'}`}
+                        key={`${logCount}-${i}`}
+                    >{mi}</pre>
+                ))
+            )
         );
 
     return <>{logsList}</>;
