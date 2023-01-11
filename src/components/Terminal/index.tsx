@@ -1,25 +1,7 @@
 import './Terminal.css';
 
-import { useState, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useTerminal, CommandReturn } from './useTerminal';
-import { createPrompt, setInput } from './utils';
-
-interface TerminalInputProps {
-    value: string;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-const TerminalInput: React.FC<TerminalInputProps> = ({ value, onChange }) => {
-    return (
-        <input
-            type='text'
-            name='commandInput'
-            value={value}
-            onChange={onChange}
-            autoFocus
-        />
-    );
-}
 
 const Logs: React.FC<{ logs: CommandReturn[] }> = ({ logs }) => {
     const logsList = logs
@@ -35,8 +17,7 @@ const Logs: React.FC<{ logs: CommandReturn[] }> = ({ logs }) => {
             : (
                 msg.map((mi, i) => (
                     <pre
-                        className={`Terminal__command_log ${error ? '--unsuccess' : '--success'}`}
-                        key={`${logCount}-${i}`}
+                        className={`Terminal__command_log ${error ? '--unsuccess' : '--success'}`} key={`${logCount}-${i}`}
                     >{mi}</pre>
                 ))
             )
@@ -45,55 +26,38 @@ const Logs: React.FC<{ logs: CommandReturn[] }> = ({ logs }) => {
     return <>{logsList}</>;
 }
 
-
 export const Terminal: React.FC<{ className?: string }> = ({ className = '' }) => {
-    const { interpretInput, activeLocation, logs } = useTerminal();
+    const { interpretInput, logs, prompt } = useTerminal();
 
+    const inputRef = useRef<HTMLInputElement>(null);
     const [value, setValue] = useState<string>('');
-    const [prompt, setPrompt] = useState<string>(() => createPrompt(activeLocation));
-
-    useEffect(() => {
-        setValue(setInput('', prompt));
-    }, [prompt]);
-    
-    useEffect(() => {
-        setPrompt(createPrompt(activeLocation));
-    }, [activeLocation]);
 
     const handleSubmit = (event: React.SyntheticEvent) => {
         event.preventDefault();
 
-        const form = event.target as HTMLFormElement & {
-            commandInput: HTMLInputElement;
-        }
-
-        const commandInputValue = value.slice(prompt.length);
-
-        interpretInput(commandInputValue);
+        interpretInput(value);
     
-        setValue(setInput('', prompt));
-        form.commandInput.focus();
+        inputRef.current && inputRef.current.focus();
+        setValue('');
     };
-
-    const handleClick = (event: React.SyntheticEvent) => {
-        const form = event.target as HTMLFormElement & {
-            commandInput: HTMLInputElement
-        }
-        form.commandInput.focus();
-    };
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setValue(setInput(event.target.value, prompt));
 
     return (
         <form 
             className={`Terminal ${className}`}
             onSubmit={handleSubmit}
-            onClick={handleClick}
+            onClick={() => { inputRef.current && inputRef.current.focus(); }}
         >
             <Logs logs={logs} />
-            <TerminalInput value={value}
-                onChange={handleChange}
-            />
+            <label className='Terminal__input_label'>
+                <span>{prompt}</span>
+                <input
+                    type='text'
+                    ref={inputRef}
+                    value={value}
+                    onChange={(event) => setValue(event.target.value)}
+                    autoFocus
+                />
+            </label>
         </form>
     );
 }

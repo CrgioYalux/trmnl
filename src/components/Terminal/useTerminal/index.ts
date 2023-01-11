@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import { sliceFirstWord, createPrompt } from './utils';
 import { command, TerminalCommand, TerminalCommands } from './commands';
-import { sliceFirstWord } from './utils';
+
 import { INITIAL_STATE } from './consts';
 
 interface Command {
@@ -18,6 +20,7 @@ interface TerminalState {
     activeLocation: string;
     busy: boolean;
     logs: CommandReturn[];
+    prompt: string;
 }
 
 type useTerminalState = TerminalState & {
@@ -30,6 +33,11 @@ export function useTerminal(): useTerminalState {
     const [busy, setBusy] = useState<boolean>(false);
     const [logCount, setLogCount] = useState<number>(0);
     const [logs, setLogs] = useState<CommandReturn[]>([]);
+    const [prompt, setPrompt] = useState<string>(() => createPrompt(activeLocation));
+
+    useEffect(() => {
+        setPrompt(createPrompt(activeLocation));
+    }, [activeLocation]);
 
     const execCommand = ({ type, args }: Command) => {
         switch (type) {
@@ -112,8 +120,9 @@ export function useTerminal(): useTerminalState {
     const value = {
         activeLocation,
         busy,
-        interpretInput,
         logs,
+        prompt,
+        interpretInput,
     };
 
     return value;

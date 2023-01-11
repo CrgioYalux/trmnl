@@ -76,6 +76,10 @@
 
   /* Global values */
   --brand-border-radius: 16px;
+
+  /* States */
+  --success-color: hsl(90, 50%, 50%);
+  --unsuccess-color: hsl(0, 50%, 50%);
 }
 
 

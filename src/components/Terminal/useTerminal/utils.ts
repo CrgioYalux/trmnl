@@ -14,6 +14,9 @@ function sliceFirstWord(sentence: string) {
     };
 }
 
+const createPrompt = (location: string, user: string = 'usr', symbol: string = '$') => `${user}:${location}${symbol}`;
+
 export { 
     sliceFirstWord,
+    createPrompt,
 }
