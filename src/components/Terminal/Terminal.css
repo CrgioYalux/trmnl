@@ -20,6 +20,7 @@
 .Terminal__input_label {
     display: flex;
     flex-direction: row;
+    gap: calc(var(--Terminal-gap) / 2);
     width: 100%;
 
     cursor: pointer;
@@ -27,7 +28,7 @@
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     font-size: clamp(.8rem, 4vw, 1rem);
 
-    color: var(--brand-color-l-high);
+    color: var(--brand-color-l-base);
 }
 
 .Terminal__input_label > input {
@@ -40,7 +41,7 @@
     font-family: inherit;
     color: inherit;
 
-    color: var(--brand-color-l-highest);
+    color: var(--brand-color-l-high);
 }
 
 .Terminal__command_log {
