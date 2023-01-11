@@ -11,6 +11,7 @@ interface Command {
 }
 
 export interface CommandReturn {
+    input: { prompt: string; value: string; };
     error: boolean;
     msg: string | string[];
     logCount: number;
@@ -109,8 +110,10 @@ export function useTerminal(): useTerminalState {
                 error: true,
                 msg: input.length > 0 ? `\`${firstWord}\`: Unknown command` : '',
                 logCount,
-            }
+            } as CommandReturn;
         }
+
+        log.input = { prompt, value: input };
 
         saveLog(deletePrevious, log);
             

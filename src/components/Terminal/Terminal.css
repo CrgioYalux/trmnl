@@ -14,6 +14,9 @@
     gap: var(--Terminal-gap);
 
     list-style: none;
+
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 
@@ -23,15 +26,14 @@
     gap: calc(var(--Terminal-gap) / 2);
     width: 100%;
 
-    cursor: pointer;
-
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     font-size: clamp(.8rem, 4vw, 1rem);
 
     color: var(--brand-color-l-base);
 }
 
-.Terminal__input_label > input {
+
+.Terminal__input {
     background-color: transparent;
 
     border: 0;
@@ -39,9 +41,12 @@
 
     font-size: 1em;
     font-family: inherit;
-    color: inherit;
 
     color: var(--brand-color-l-high);
+}
+
+.Terminal__input_label.--usable > span {
+    cursor: pointer;
 }
 
 .Terminal__command_log {
