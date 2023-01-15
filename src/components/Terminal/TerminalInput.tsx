@@ -12,17 +12,17 @@ export const TerminalInput = React.forwardRef<HTMLInputElement, TerminalInputPro
 
     const Input = usable 
         ? <input
-            className='Terminal__input'
+            className='TerminalInput__input'
             type='text'
             ref={ref}
             value={value}
             onChange={onChange}
             autoFocus={usable}
         />
-        : <span className='Terminal__input'>{value}</span>;
+        : <span className='TerminalInput__input'>{value}</span>;
 
     return (
-        <label className={`Terminal__input_label ${usable ? '--usable' : '--unusable'}`}>
+        <label className={`TerminalInput ${usable ? '--usable' : '--unusable'}`}>
             <span>{prompt}</span>
             {Input}
         </label>

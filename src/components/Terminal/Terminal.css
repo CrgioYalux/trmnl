@@ -20,7 +20,7 @@
 }
 
 
-.Terminal__input_label {
+.TerminalInput {
     display: flex;
     flex-direction: row;
     gap: calc(var(--Terminal-gap) / 2);
@@ -32,8 +32,11 @@
     color: var(--brand-color-l-base);
 }
 
+.TerminalInput.--usable > span {
+    cursor: pointer;
+}
 
-.Terminal__input {
+.TerminalInput__input {
     background-color: transparent;
 
     border: 0;
@@ -45,14 +48,10 @@
     color: var(--brand-color-l-high);
 }
 
-.Terminal__input_label.--usable > span {
-    cursor: pointer;
+.SingleTerminalLog {
+    color: var(--secondary-color-l-low);
 }
 
-.Terminal__command_log {
-    color: var(--secondary-color-l-base);
-}
-
-.Terminal__command_log.--unsuccess { 
+.SingleTerminalLog.--unsuccess { 
     color: var(--unsuccess-color);
 }

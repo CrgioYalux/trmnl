@@ -11,7 +11,7 @@ interface SingleTerminalLogProps {
 const SingleTerminalLog: React.FC<SingleTerminalLogProps> = ({ error = false, msg }) => {
     return (
             <pre
-                className={`Terminal__command-log ${error ? '--unsuccess' : '--success'}`}
+                className={`SingleTerminalLog ${error ? '--unsuccess' : '--success'}`}
             >
                 {msg}
             </pre>
