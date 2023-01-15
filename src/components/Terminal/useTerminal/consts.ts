@@ -55,7 +55,7 @@ const defaultDirectoryTree: Directory = [
 ];
 
 export const INITIAL_STATE = {
-    activeLocation: root,
+    currentDirectory: root,
     defaultDirectoryTree
 };
 

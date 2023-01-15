@@ -18,8 +18,6 @@ export interface CommandReturn {
 }
 
 interface TerminalState {
-    activeLocation: Directory[number];
-    busy: boolean;
     logs: CommandReturn[];
     prompt: string;
 }
@@ -29,21 +27,20 @@ type useTerminalState = TerminalState & {
 }
 
 export function useTerminal(): useTerminalState {
-    const [activeLocation, setActiveLocation] = useState<Directory[number]>(INITIAL_STATE.activeLocation);
+    const [currentDirectory, setCurrentDirectory] = useState<Directory[number]>(INITIAL_STATE.currentDirectory);
     const [directoryTree, setDirectoryTree] = useState(INITIAL_STATE.defaultDirectoryTree);
-    const [busy, setBusy] = useState<boolean>(false);
     const [logCount, setLogCount] = useState<number>(0);
     const [logs, setLogs] = useState<CommandReturn[]>([]);
-    const [prompt, setPrompt] = useState<string>(() => createPrompt(activeLocation.name));
+    const [prompt, setPrompt] = useState<string>(() => createPrompt(currentDirectory.name));
 
     useEffect(() => {
-        setPrompt(createPrompt(activeLocation.path));
-    }, [activeLocation]);
+        setPrompt(createPrompt(currentDirectory.path));
+    }, [currentDirectory]);
 
     const execCommand = ({ type, args }: Command) => {
         switch (type) {
             case 'cd':
-                const { error, msg } = command.cd(args, directoryTree, activeLocation, setActiveLocation);
+                const { error, msg } = command.cd(args, directoryTree, currentDirectory, setCurrentDirectory);
                 return {
                     error,
                     msg,
@@ -52,7 +49,7 @@ export function useTerminal(): useTerminalState {
             case 'pwd':
                 return {
                     error: false,
-                    msg: activeLocation.path,
+                    msg: currentDirectory.path,
                     logCount
                 };
             case 'clear':
@@ -121,8 +118,6 @@ export function useTerminal(): useTerminalState {
     }
 
     const value = {
-        activeLocation,
-        busy,
         logs,
         prompt,
         interpretInput,
