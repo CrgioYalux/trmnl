@@ -40,10 +40,10 @@ export function useTerminal(): useTerminalState {
     const execCommand = ({ type, args }: Command) => {
         switch (type) {
             case 'cd':
-                const { error, msg } = command.cd(args, directoryTree, currentDirectory, setCurrentDirectory);
+                const cdReturn = command.cd(args, directoryTree, currentDirectory, setCurrentDirectory);
                 return {
-                    error,
-                    msg,
+                    error: cdReturn.error,
+                    msg: cdReturn.msg,
                     logCount
                 };
             case 'pwd':
@@ -59,10 +59,10 @@ export function useTerminal(): useTerminalState {
                     logCount
                 };
             case 'tree':
-                const { counts, logs } = command.tree(directoryTree, null);
+                const treeReturn = command.tree(directoryTree, null);
                 return {
                     error: false,
-                    msg: [...logs, `files: ${counts.files} | dirs: ${counts.dirs}`],
+                    msg: [...treeReturn.logs, `files: ${treeReturn.counts.files} | dirs: ${treeReturn.counts.dirs}`],
                     logCount
                 }
             case 'neofetch':
@@ -73,6 +73,12 @@ export function useTerminal(): useTerminalState {
                     logCount
                 };
             case 'ls':
+                const lsReturn = command.ls(args, directoryTree, currentDirectory);
+                return {
+                    error: lsReturn.error,
+                    msg: lsReturn.msg,
+                    logCount
+                };
             default:
                 return {
                     error: false,

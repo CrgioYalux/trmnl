@@ -9,10 +9,13 @@ type Directory = Array<{
 const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch', 'clear', 'tree'] as const;
 type TerminalCommand = typeof TerminalCommands[number];
 
-const command = { cd, tree };
-
 /* cd */
-function cd(args: string[], directory: Directory, currentDirectory: Directory[number], setter: React.Dispatch<React.SetStateAction<Directory[number]>>) {
+function cd(
+    args: string[],
+    directory: Directory,
+    currentDirectory: Directory[number],
+    setter: React.Dispatch<React.SetStateAction<Directory[number]>>
+) {
     const path = args[0];
 
     // if no path provided go to root directory
@@ -103,6 +106,19 @@ function cd(args: string[], directory: Directory, currentDirectory: Directory[nu
     }
 }
 
+/* ls */
+function ls(args: string[], directory: Directory, currentDirectory: Directory[number]) {
+    const path = args[0];
+    if (!path) {
+        const directoryContents = directory.filter(({ parent }) => parent === currentDirectory.id);
+        const contentNames = directoryContents.map(({ name }) => name);
+
+        return { error: true, msg: contentNames };
+    }
+
+    return { error: false, msg: '' };
+}
+
 /* tree */
 function tree(directory: Directory, parent: number | null) {
     const counts = { dirs: 0, files: 0 };
@@ -130,6 +146,8 @@ function tree(directory: Directory, parent: number | null) {
 
     return { counts, logs };
 }
+
+const command = { cd, ls, tree };
 
 export {
     TerminalCommands,
