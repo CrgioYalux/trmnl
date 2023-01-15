@@ -18,7 +18,7 @@ export interface CommandReturn {
 }
 
 interface TerminalState {
-    activeLocation: string;
+    activeLocation: Directory[number];
     busy: boolean;
     logs: CommandReturn[];
     prompt: string;
