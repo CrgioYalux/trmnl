@@ -17,6 +17,7 @@ export const TerminalInput = React.forwardRef<HTMLInputElement, TerminalInputPro
             ref={ref}
             value={value}
             onChange={onChange}
+            autoFocus={usable}
         />
         : <span className='Terminal__input'>{value}</span>;
 

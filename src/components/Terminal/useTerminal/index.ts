@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { sliceFirstWord, createPrompt } from './utils';
-import { command, TerminalCommand, TerminalCommands } from './commands';
+import { command, TerminalCommand, TerminalCommands, Directory } from './commands';
 
 import { INITIAL_STATE } from './consts';
 
@@ -29,30 +29,30 @@ type useTerminalState = TerminalState & {
 }
 
 export function useTerminal(): useTerminalState {
-    const [activeLocation, setActiveLocation] = useState<string>(INITIAL_STATE.activeLocation);
+    const [activeLocation, setActiveLocation] = useState<Directory[number]>(INITIAL_STATE.activeLocation);
     const [directoryTree, setDirectoryTree] = useState(INITIAL_STATE.defaultDirectoryTree);
     const [busy, setBusy] = useState<boolean>(false);
     const [logCount, setLogCount] = useState<number>(0);
     const [logs, setLogs] = useState<CommandReturn[]>([]);
-    const [prompt, setPrompt] = useState<string>(() => createPrompt(activeLocation));
+    const [prompt, setPrompt] = useState<string>(() => createPrompt(activeLocation.name));
 
     useEffect(() => {
-        setPrompt(createPrompt(activeLocation));
+        setPrompt(createPrompt(activeLocation.path));
     }, [activeLocation]);
 
     const execCommand = ({ type, args }: Command) => {
         switch (type) {
             case 'cd':
-                command.cd(args, setActiveLocation);
+                const { error, msg } = command.cd(args, directoryTree, activeLocation, setActiveLocation);
                 return {
-                    error: false,
-                    msg: ``,
+                    error,
+                    msg,
                     logCount
                 };
             case 'pwd':
                 return {
                     error: false,
-                    msg: activeLocation,
+                    msg: activeLocation.path,
                     logCount
                 };
             case 'clear':
