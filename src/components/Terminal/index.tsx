@@ -1,7 +1,7 @@
 import './Terminal.css';
 
 import { useState, useRef } from 'react';
-import { useTerminal } from './useTerminal';
+import { useTerminal } from '../../providers/Terminal/useTerminal';
 import { TerminalLogs } from './TerminalLogs';
 import { TerminalInput } from './TerminalInput';
 
@@ -10,7 +10,6 @@ export const Terminal: React.FC<{ className?: string }> = ({ className = '' }) =
 
     const inputRef = useRef<HTMLInputElement>(null);
     const [value, setValue] = useState<string>('');
-
 
     const handleSubmit = (event: React.SyntheticEvent) => {
         event.preventDefault();

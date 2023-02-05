@@ -1,4 +1,6 @@
 import { Directory } from './commands';
+import { TerminalContext } from './utils';
+import { createPrompt } from './helpers';
 
 const root: Directory[number] = {
     id: 0,
@@ -6,9 +8,9 @@ const root: Directory[number] = {
     isDirectory: true,
     parent: null,
     path: '/'
-}
+};
 
-const defaultDirectoryTree: Directory = [
+const directoryTree: Directory = [
     root,
     {
         id: 1,
@@ -54,8 +56,29 @@ const defaultDirectoryTree: Directory = [
     },
 ];
 
+const prompt: string = createPrompt(root.name);
+
+const terminalContext: TerminalContext = {
+    logs: [],
+    isBusy: false,
+    prompt: prompt,
+    directoryTree: directoryTree,
+    currentDirectory: root,
+    interpretInput: () => ({
+        input: {
+            prompt: '',
+            value: ''
+        },
+        msg: '',
+        error: false,
+        logCount: 0
+    })
+};
+
 export const INITIAL_STATE = {
     currentDirectory: root,
-    defaultDirectoryTree
+    directoryTree,
+    prompt,
+    terminalContext
 };
 

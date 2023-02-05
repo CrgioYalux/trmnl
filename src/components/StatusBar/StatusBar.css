@@ -43,15 +43,15 @@
     border-radius: 6px;
 
     background-color: var(--primary-color-l-base);
+    border: 2px solid var(--primary-color-l-base);
 
     line-height: 1;
     font-size: 1em;
     font-weight: 800;
-    padding: .15em;
+    padding: .10em;
 
     user-select: none;
     cursor: pointer;
-    border: 2px solid var(--primary-color-l-base);
 }
 
 .StatusBar__item.--active {

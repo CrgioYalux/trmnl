@@ -1,16 +1,10 @@
-import { useState, useEffect } from 'react';
-
-import { sliceFirstWord, createPrompt } from './utils';
-import { command, TerminalCommand, TerminalCommands, Directory } from './commands';
-
+import { useState, useEffect, createContext } from 'react';
 import { INITIAL_STATE } from './consts';
+import { Directory, TerminalCommand, TerminalCommands } from './commands';
+import { createPrompt, sliceFirstWord } from './helpers';
+import { command } from './commands';
 
-interface Command {
-    type: TerminalCommand;
-    args: string[];
-}
-
-export interface CommandReturn {
+interface CommandReturn {
     input: { prompt: string; value: string; };
     error: boolean;
     msg: string | string[];
@@ -19,19 +13,30 @@ export interface CommandReturn {
 
 interface TerminalState {
     logs: CommandReturn[];
+    isBusy: boolean;
     prompt: string;
+    directoryTree: Directory;
+    currentDirectory: Directory[number];
 }
 
-type useTerminalState = TerminalState & {
+export type TerminalContext = TerminalState & {
     interpretInput: (input: string) => CommandReturn;
 }
 
-export function useTerminal(): useTerminalState {
+interface Command {
+    type: TerminalCommand;
+    args: string[];
+}
+
+export const Context = createContext<TerminalContext>(INITIAL_STATE.terminalContext);
+
+export const useTerminalContext = (): TerminalContext => {
+    const [prompt, setPrompt] = useState<string>(INITIAL_STATE.prompt);
+    const [directoryTree, setDirectoryTree] = useState(INITIAL_STATE.directoryTree);
     const [currentDirectory, setCurrentDirectory] = useState<Directory[number]>(INITIAL_STATE.currentDirectory);
-    const [directoryTree, setDirectoryTree] = useState(INITIAL_STATE.defaultDirectoryTree);
+    const [isBusy, setIsBusy] = useState<boolean>(false);
     const [logCount, setLogCount] = useState<number>(0);
     const [logs, setLogs] = useState<CommandReturn[]>([]);
-    const [prompt, setPrompt] = useState<string>(() => createPrompt(currentDirectory.name));
 
     useEffect(() => {
         setPrompt(createPrompt(currentDirectory.path));
@@ -90,13 +95,14 @@ export function useTerminal(): useTerminalState {
 
     const saveLog = (deletePrevious: boolean, commandReturn: CommandReturn) => {
         if (deletePrevious) setLogs([commandReturn]);
-        else setLogs(prev => [...prev, commandReturn]);
+        else setLogs((prev) => [...prev, commandReturn]);
     };
 
     const interpretInput = (input: string): CommandReturn => {
         setLogCount((prev) => prev + 1);
 
-        const { firstWord, rest } = sliceFirstWord(input); const args = rest === null ? [] : rest.split(' ');
+        const { firstWord, rest } = sliceFirstWord(input);
+        const args = rest === null ? [] : rest.split(' ');
         let log = null;
         let deletePrevious = false;
 
@@ -121,13 +127,16 @@ export function useTerminal(): useTerminalState {
         saveLog(deletePrevious, log);
             
         return log;
-    }
+    };
 
-    const value = {
+    const state: TerminalContext = {
+        isBusy,
         logs,
         prompt,
         interpretInput,
+        directoryTree,
+        currentDirectory,
     };
 
-    return value;
-}
+    return state;
+};

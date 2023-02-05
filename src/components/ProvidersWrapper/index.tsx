@@ -1,4 +1,5 @@
 import { SystemOptionsProvider } from '../../providers/SystemOptions';
+import { TerminalProvider } from '../../providers/Terminal';
 
 interface ProvidersWrapperProps {
     children: React.ReactNode;
@@ -7,7 +8,9 @@ interface ProvidersWrapperProps {
 export const ProvidersWrapper: React.FC<ProvidersWrapperProps> = ({ children }) => {
     return (
         <SystemOptionsProvider>
-            {children}
+            <TerminalProvider>       
+                {children}
+            </TerminalProvider>
         </SystemOptionsProvider>
     );
 }
