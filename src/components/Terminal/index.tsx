@@ -1,22 +1,27 @@
 import './Terminal.css';
 
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTerminal } from '../../providers/Terminal/useTerminal';
 import { TerminalLogs } from './TerminalLogs';
 import { TerminalInput } from './TerminalInput';
 
 export const Terminal: React.FC<{ className?: string }> = ({ className = '' }) => {
     const { interpretInput, logs, prompt } = useTerminal();
-
-    const inputRef = useRef<HTMLInputElement>(null);
     const [value, setValue] = useState<string>('');
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+            inputRef.current.scrollIntoView();
+        }
+    }, [logs]);
 
     const handleSubmit = (event: React.SyntheticEvent) => {
         event.preventDefault();
-
+        
         interpretInput(value);
     
-        inputRef.current && inputRef.current.focus();
         setValue('');
     };
 

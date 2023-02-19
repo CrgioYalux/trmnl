@@ -28,7 +28,7 @@ interface Command {
     args: string[];
 }
 
-export const Context = createContext<TerminalContext>(INITIAL_STATE.terminalContext);
+export const Context = createContext<TerminalContext>(INITIAL_STATE.terminalContext as TerminalContext);
 
 export const useTerminalContext = (): TerminalContext => {
     const [prompt, setPrompt] = useState<string>(INITIAL_STATE.prompt);

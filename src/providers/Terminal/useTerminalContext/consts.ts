@@ -1,5 +1,4 @@
 import { Directory } from './commands';
-import { TerminalContext } from './utils';
 import { createPrompt } from './helpers';
 
 const root: Directory[number] = {
@@ -58,7 +57,7 @@ const directoryTree: Directory = [
 
 const prompt: string = createPrompt(root.name);
 
-const terminalContext: TerminalContext = {
+const terminalContext = {
     logs: [],
     isBusy: false,
     prompt: prompt,

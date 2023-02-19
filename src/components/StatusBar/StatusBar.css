@@ -3,8 +3,6 @@
     flex: 0 0 25px;
 
     background-color: var(--primary-color-l-high);
-
-
     border-radius: calc(var(--brand-border-radius) * 1);
 
     display: grid;
@@ -28,6 +26,7 @@
     flex: 1 1 auto;
     height: 100%;
 
+
     padding: calc(var(--StatusBar-gap) * 1) 0;
 
     color: var(--secondary-color-l-low);
@@ -48,7 +47,7 @@
     line-height: 1;
     font-size: 1em;
     font-weight: 800;
-    padding: .10em;
+    padding: .12em;
 
     user-select: none;
     cursor: pointer;

@@ -9,6 +9,9 @@ type Directory = Array<{
 const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch', 'clear', 'tree'] as const;
 type TerminalCommand = typeof TerminalCommands[number];
 
+// function getAutoCompletion(curr) {
+// }
+
 /* cd */
 function cd(
     args: string[],
@@ -17,6 +20,9 @@ function cd(
     setter: React.Dispatch<React.SetStateAction<Directory[number]>>
 ) {
     const path = args[0];
+
+    
+
 
     // if no path provided go to root directory
     if (!path) {
@@ -113,7 +119,7 @@ function ls(args: string[], directory: Directory, currentDirectory: Directory[nu
         const directoryContents = directory.filter(({ parent }) => parent === currentDirectory.id);
         const contentNames = directoryContents.map(({ name }) => name);
 
-        return { error: true, msg: contentNames };
+        return { error: false, msg: contentNames };
     }
 
     return { error: false, msg: '' };
