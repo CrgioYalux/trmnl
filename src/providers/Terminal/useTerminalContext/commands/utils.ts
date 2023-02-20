@@ -1,13 +1,18 @@
 type Directory = Array<{
-    id: number;
-    name: string;
-    path: string;
-    parent: number | null;
-    isDirectory: boolean;
+    id: number,
+    name: string,
+    path: string,
+    parent: number | null,
+    isDirectory: boolean,
 }>
 
-const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch', 'clear', 'tree'] as const;
+const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch', 'clear', 'tree', 'history'] as const;
 type TerminalCommand = typeof TerminalCommands[number];
+
+type Command = {
+    type: TerminalCommand,
+    args: string[],
+}
 
 type CommandReturn<T> = {
     error: boolean,
@@ -73,6 +78,7 @@ function runPath(directory: Directory, currentDirectory: Directory[number], path
 export type {
     Directory,
     TerminalCommand,
+    Command,
     CommandReturn
 }
 

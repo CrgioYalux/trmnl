@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CommandReturn } from '../../providers/Terminal/useTerminalContext';
+import { TerminalContextCommandReturn } from '../../providers/Terminal/useTerminalContext';
 import { TerminalInput } from "./TerminalInput";
 
 interface SingleTerminalLogProps {
@@ -29,20 +29,20 @@ const MultipleTerminalLogs: React.FC<MultipleTerminalLogs> = ({ msgs, parentKey 
     return <>{list}</>
 };
 
-export const TerminalLogs: React.FC<{ logs: CommandReturn[] }> = ({ logs }) => {
+export const TerminalLogs: React.FC<{ logs: TerminalContextCommandReturn[] }> = ({ logs }) => {
     const logsList = logs
-        .map(({ msgs, error, logCount, input }) => {
-            return (
-                <React.Fragment key={logCount}>
+        .map((log) => {
+            if (log.out) return (
+                <React.Fragment key={log.out.input.idx}>
                     <TerminalInput 
                         usable={false}
-                        value={input.value}
-                        prompt={input.prompt}
+                        value={log.out.input.value}
+                        prompt={log.out.input.prompt}
                     />
                     {
-                        msgs.length === 1
-                            ? <SingleTerminalLog error={error} msg={msgs[0]}/>
-                            : <MultipleTerminalLogs parentKey={logCount} msgs={msgs}/>
+                        log.msgs.length === 1
+                            ? <SingleTerminalLog error={log.error} msg={log.msgs[0]}/>
+                            : <MultipleTerminalLogs parentKey={log.out.input.idx} msgs={log.msgs}/>
                     }
 
                 </React.Fragment>   
@@ -51,6 +51,3 @@ export const TerminalLogs: React.FC<{ logs: CommandReturn[] }> = ({ logs }) => {
 
     return <>{logsList}</>;
 };
-
-
-
