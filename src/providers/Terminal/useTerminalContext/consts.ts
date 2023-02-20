@@ -57,6 +57,37 @@ const directoryTree: Directory = [
 
 const prompt: string = createPrompt(root.name);
 
+const neofetchText: string[] = [
+"A terminal (not actually) in the browser",
+"Made with React (what a surprise, am i right?)",
+"> Project's Repository: github.com/CrgioYalux/trmnl",
+"> My Github, where you would find more cool projects",
+"  like this (If I had them): github.com/CrgioYalux",
+];
+
+const neofetch = [
+"                ###            ###                ", // 0
+"             ##     ##      ##     ##             ", // 1
+"            ##       ##    ##       ##            ", // 2
+"            ##         ####         ##            ", // 3
+"            ##          ##          ##            ", // 4
+"             ##       ##  ##       ##             ", // 5
+`         ##### ###### ###### ###### #####         ${neofetchText[0]}`, // 6
+`      ##       ##   ##      ##   ##       ##      ${neofetchText[1]}`, // 7
+"    ##          ## ##        ## ##          ##    ", // 8  
+"   ##            ###   ####   ###            ##   ", // 9
+`   ##            ###   ####   ###            ##   ${neofetchText[2]}`, // 10    
+`    ##          ## ##        ## ##          ##    ${neofetchText[3]}`, // 11     
+`      ##       ##   ##      ##   ##       ##      ${neofetchText[4]}`, // 12     
+"         ##### ###### ###### ###### #####         ", // 13    
+"             ##       ##  ##       ##             ", // 14     
+"            ##          ##          ##            ", // 15     
+"            ##         ####         ##            ", // 16
+"            ##       ##    ##       ##            ", // 17
+"             ##     ##      ##     ##             ", // 18
+"                ###            ###                ", // 19
+];
+
 const terminalContext = {
     logs: [],
     isBusy: false,
@@ -78,6 +109,7 @@ export const INITIAL_STATE = {
     currentDirectory: root,
     directoryTree,
     prompt,
-    terminalContext
+    terminalContext,
+    neofetch
 };
 

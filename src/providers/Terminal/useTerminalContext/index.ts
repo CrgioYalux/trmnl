@@ -86,6 +86,13 @@ export const useTerminalContext = (): TerminalContext => {
                     }
                 }
             case 'neofetch':
+                return {
+                    error: false,
+                    msgs: INITIAL_STATE.neofetch,
+                    out: {
+                        input: { idx: logCount, prompt, value: '' }
+                    }
+                }
             case 'help':
                 return {
                     error: false,
