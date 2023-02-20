@@ -37,11 +37,15 @@ function runPath(directory: Directory, currentDirectory: Directory[number], path
             }
         }
         else if (parts[i]) {
-            for (let j = 0; j < directory.length; j++) { 
-                if (directory[j].isDirectory && directory[j].name === parts[i] && out.id === directory[j].parent) {
-                    found = true;
-                    out = directory[j];
-                    break;
+            for (let j = 0; j < directory.length; j++) {
+                if (directory[j].name === parts[i]) {
+                    if (
+                        (directory[j].parent === out.id && directory[j].isDirectory) || directory[j].parent === null
+                    ) {
+                        found = true;
+                        out = directory[j];
+                        break;
+                    }
                 }
             }
         }

@@ -3,7 +3,7 @@ import { createPrompt } from './helpers';
 
 const root: Directory[number] = {
     id: 0,
-    name: '/',
+    name: '~',
     isDirectory: true,
     parent: null,
     path: '/'

@@ -1,4 +1,4 @@
-import { Directory, runPath } from "./utils";
+import { Directory, CommandReturn, runPath } from "./utils";
 
 function walk(
     directory: Directory,
@@ -51,7 +51,11 @@ function relativeDirectoryTree(directory: Directory, currentDirectory: Directory
     return visited;
 }
 
-export default function tree(args: string[], directory: Directory, currentDirectory: Directory[number]) {
+export default function tree(
+    args: string[],
+    directory: Directory,
+    currentDirectory: Directory[number]
+): CommandReturn<{ counts: { dirs: number, files: number }, logs: string[] }> {
     const path = args[0];
     const counts = { dirs: 0, files: 0 };
     const logs: string[] = [];
@@ -59,18 +63,27 @@ export default function tree(args: string[], directory: Directory, currentDirect
     if (!path) {
         logs.push(currentDirectory.name);
         walk(directory, currentDirectory, '', logs, counts);
-    }
-    else {
-        const commandReturn = runPath(directory, currentDirectory, path);
 
-        if (commandReturn.out) {
-            const relativeDirectory = relativeDirectoryTree(directory, commandReturn.out);
-
-            logs.push(commandReturn.out.name);
-
-            walk(relativeDirectory, commandReturn.out, '', logs, counts);
+        return {
+            error: false,
+            msgs: [],
+            out: { counts, logs }
         }
     }
 
-    return { counts, logs };
+    const commandReturn = runPath(directory, currentDirectory, path);
+
+    if (commandReturn.out) {
+        const relativeDirectory = relativeDirectoryTree(directory, commandReturn.out);
+
+        logs.push(commandReturn.out.name);
+
+        walk(relativeDirectory, commandReturn.out, '', logs, counts);
+    }
+
+    return {
+        error: commandReturn.error,
+        msgs: commandReturn.msgs,
+        out: { counts, logs }
+    }
 }
