@@ -1,9 +1,9 @@
 type Directory = Array<{
-    name: string;
-    isDirectory: boolean;
-    parent: number | null;
     id: number;
+    name: string;
     path: string;
+    parent: number | null;
+    isDirectory: boolean;
 }>
 
 const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch', 'clear', 'tree'] as const;
@@ -80,6 +80,3 @@ export {
     TerminalCommands,
     runPath
 }
-
-
-

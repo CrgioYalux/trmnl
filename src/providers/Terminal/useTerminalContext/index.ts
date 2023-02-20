@@ -1,7 +1,8 @@
 import { useState, useEffect, createContext } from 'react';
 import { INITIAL_STATE } from './consts';
 import { createPrompt, sliceFirstWord } from './helpers';
-import { Directory, TerminalCommand, TerminalCommands } from './commands/utils'; import command from './commands';
+import { Directory, TerminalCommand, TerminalCommands } from './commands/utils';
+import command from './commands';
 
 export interface CommandReturn {
     msgs: readonly string[];
@@ -12,7 +13,6 @@ export interface CommandReturn {
 
 interface TerminalState {
     logs: CommandReturn[];
-    isBusy: boolean;
     prompt: string;
     directoryTree: Directory;
     currentDirectory: Directory[number];
@@ -33,7 +33,6 @@ export const useTerminalContext = (): TerminalContext => {
     const [prompt, setPrompt] = useState<string>(INITIAL_STATE.prompt);
     const [directoryTree, setDirectoryTree] = useState(INITIAL_STATE.directoryTree);
     const [currentDirectory, setCurrentDirectory] = useState<Directory[number]>(INITIAL_STATE.currentDirectory);
-    const [isBusy, setIsBusy] = useState<boolean>(false);
     const [logCount, setLogCount] = useState<number>(0);
     const [logs, setLogs] = useState<CommandReturn[]>([]);
 
@@ -132,7 +131,6 @@ export const useTerminalContext = (): TerminalContext => {
     };
 
     const state: TerminalContext = {
-        isBusy,
         logs,
         prompt,
         interpretInput,

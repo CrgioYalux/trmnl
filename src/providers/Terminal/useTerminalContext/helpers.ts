@@ -1,4 +1,4 @@
-function sliceFirstWord(sentence: string) {
+function sliceFirstWord(sentence: string): { firstWord: string, rest: string | null } {
     const trimmed = sentence.trim();
     const firstSpaceIndex = trimmed.indexOf(' ');
 
@@ -14,7 +14,7 @@ function sliceFirstWord(sentence: string) {
     };
 }
 
-const createPrompt = (location: string, user: string = 'usr', symbol: string = '$') => `${user}:${location}${symbol}`;
+const createPrompt = (location: string, user: string = 'usr', symbol: string = '$'): string => `${user}:${location}${symbol}`;
 
 export { 
     sliceFirstWord,
