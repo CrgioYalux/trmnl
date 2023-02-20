@@ -1,4 +1,4 @@
-import { Directory } from './commands';
+import { Directory } from './commands/utils';
 import { createPrompt } from './helpers';
 
 const root: Directory[number] = {
