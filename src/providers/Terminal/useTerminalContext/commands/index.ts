@@ -9,8 +9,62 @@ type Directory = Array<{
 const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch', 'clear', 'tree'] as const;
 type TerminalCommand = typeof TerminalCommands[number];
 
-// function getAutoCompletion(curr) {
-// }
+type CommandReturn<T> = {
+    error: boolean,
+    msgs: string[],
+    out?: T,
+}
+
+function runPath(directory: Directory, currentDirectory: Directory[number], path: string = ''): CommandReturn<Directory[number]> {
+    const parts = path.split('/');
+
+    let out: Directory[number] = currentDirectory;
+    let pathNotFound: string = '';
+
+    for (let i = 0; i < parts.length; i++) {
+        if (parts[i] === '.' || parts[i].length === 0) {
+            continue;
+        }
+
+        let found = false;
+        if (parts[i] === '..') {
+            for (let j = 0; j < directory.length; j++) {
+                if (out.parent === directory[j].id) {
+                    found = true;
+                    out = directory[j];
+                    break;
+                }
+            }
+        }
+        else if (parts[i]) {
+            for (let j = 0; j < directory.length; j++) { 
+                if (directory[j].isDirectory && directory[j].name === parts[i] && out.id === directory[j].parent) {
+                    found = true;
+                    out = directory[j];
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
+            pathNotFound = parts.map((p, j) => i === j ? `[${p}]` : p).join('/');
+            break;
+        }
+    }
+
+    if (pathNotFound.length !== 0) {
+        return {
+            error: true,
+            msgs: [`${pathNotFound} : path does not exist`],
+        };
+    } 
+    
+    return {
+        error: false,
+        msgs: [],
+        out
+    }
+}
 
 /* cd */
 function cd(
@@ -18,111 +72,61 @@ function cd(
     directory: Directory,
     currentDirectory: Directory[number],
     setter: React.Dispatch<React.SetStateAction<Directory[number]>>
-) {
+): CommandReturn<Directory[number]> {
     const path = args[0];
 
-    
-
-
-    // if no path provided go to root directory
     if (!path) {
-        const root = directory.find(({ parent }) => parent === null);
+        let root: Directory[number] | null = null;
+    
+        for (let i = 0; i < directory.length; i++) {
+            if (directory[i].parent === null) {
+                root = directory[i];
+                break;
+            }
+        }
+
         if (root) setter(root);
-        return { error: false, msg: '' }
+        return { error: false, msgs: [] };
+    }
+    
+    const commandReturn = runPath(directory, currentDirectory, path);
+
+    if (commandReturn.out) {
+        setter(commandReturn.out);
     }
 
-    // idea: 
-    // treat every character in the path like a command, e.g. '/', '..', 'some_path'
-    // then just start applying those commands on the currentDirectory 
-    //
-    // for now, cd lacks going backwards multiple times, e.g. `cd ../../..`
-    // and also any combination of going backwards and entering some directory, e.g. `cd ../stuff`
-
-    // if passed '..' as path go to the currentDirectory's parent directory
-    if (path === '..') {
-        const parent = directory.find(({ id }) => id === currentDirectory.parent);
-        if (parent !== undefined) setter(parent);
-        return { error: false, msg: '' } // either if there's a parent or not, there's no error
-    }
-
-    // if passed an absolute path
-    if (path[0] === '/') { 
-        const foundAbsolutePath = directory.find(({ name }) => name === path);
-        if (foundAbsolutePath !== undefined) {
-            if (foundAbsolutePath.isDirectory) {
-                setter(foundAbsolutePath);
-                return { error: false, msg: '' }
-            }
-            return {
-                error: true, 
-                msg: `cd: '${path}' is not a directory`
-            }
-        }
-    }
-
-    // if passed a relative path (looking for a child of currentDirectory)
-    const children = directory.filter(({ parent }) => parent === currentDirectory.id);
-    if (children.length !== 0) {
-        const re = new RegExp(path, 'g');
-        const foundRelativePath = children.find(({ name }) => name.match(re));
-        if (foundRelativePath !== undefined) {
-            if (foundRelativePath.isDirectory) {
-                setter(foundRelativePath);
-                return { error: false, msg: '' }
-            }
-            return {
-                error: true,
-                msg: `cd: '${path}' is not a directory`
-            }
-        }
-    }
-
-    const slicedPath = path.split('/').filter(p => p !== '/'); // documents/to_know/ => [documents, to_know]
-    let lastChild: Directory[number] | null = null;
-
-    for (let x = 0; x < slicedPath.length; x++) {
-        const parentPath = slicedPath[x];
-        const childPath = slicedPath[x + 1];
-
-        const parent = directory.find(({ name, parent }) => name === parentPath && (x === 0 ? parent === currentDirectory.id : true));
-        if (parent !== undefined) {
-            const child = directory.find((d) => d.name === childPath && d.parent === parent.id);
-            if (child !== undefined) {
-                if (x === slicedPath.length - 2) {
-                    lastChild = child;
-                    break;
-                }
-                const childChildren = directory.filter(({ parent, isDirectory }) => parent === child.id && isDirectory);
-                if (childChildren.length === 0) break;
-            } else break;
-        } else break;
-    }
-
-    if (lastChild !== null) {
-        setter(lastChild);
-        return {
-            error: false,
-            msg: ''
-        }
-    }
-
-    return {
-        error: true,
-        msg: `cd: The directory '${path}' does not exist`
-    }
+    return commandReturn;
 }
 
 /* ls */
-function ls(args: string[], directory: Directory, currentDirectory: Directory[number]) {
+function ls(args: string[], directory: Directory, currentDirectory: Directory[number]): CommandReturn<Directory[number]> {
     const path = args[0];
-    if (!path) {
-        const directoryContents = directory.filter(({ parent }) => parent === currentDirectory.id);
-        const contentNames = directoryContents.map(({ name }) => name);
+    const names: string[] = [];
 
-        return { error: false, msg: contentNames };
+    if (!path) {
+        for (let i = 0; i < directory.length; i++) {
+            if (currentDirectory.id === directory[i].parent) {
+                names.push(directory[i].name);
+            }
+        }
+
+        return { error: false, msgs: names };
     }
 
-    return { error: false, msg: '' };
+    const commandReturn = runPath(directory, currentDirectory, path);
+
+    if (commandReturn.out) {
+
+        for (let i = 0; i < directory.length; i++) {
+            if (commandReturn.out.id === directory[i].parent) {
+                names.push(directory[i].name);
+            }
+        }
+
+        return { error: false, msgs: names };
+    }
+
+    return commandReturn;
 }
 
 /* tree */

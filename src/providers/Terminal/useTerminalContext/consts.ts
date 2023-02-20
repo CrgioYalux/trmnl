@@ -68,7 +68,7 @@ const terminalContext = {
             prompt: '',
             value: ''
         },
-        msg: '',
+        msgs: [],
         error: false,
         logCount: 0
     })
