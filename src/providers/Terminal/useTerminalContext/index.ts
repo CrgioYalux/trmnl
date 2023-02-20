@@ -1,8 +1,8 @@
 import { useState, useEffect, createContext } from 'react';
 import { INITIAL_STATE } from './consts';
-import { Directory, TerminalCommand, TerminalCommands } from './commands';
 import { createPrompt, sliceFirstWord } from './helpers';
-import { command } from './commands';
+import { Directory, TerminalCommand, TerminalCommands } from './commands/utils';
+import command from './commands';
 
 export interface CommandReturn {
     msgs: readonly string[];
@@ -67,7 +67,7 @@ export const useTerminalContext = (): TerminalContext => {
                     input: { prompt, value: '' }
                 };
             case 'tree':
-                const treeReturn = command.tree(directoryTree, null);
+                const treeReturn = command.tree(args, directoryTree, currentDirectory);
                 return {
                     error: false,
                     msgs: [...treeReturn.logs, `files: ${treeReturn.counts.files} | dirs: ${treeReturn.counts.dirs}`],
