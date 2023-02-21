@@ -6,7 +6,7 @@ type Directory = Array<{
     isDirectory: boolean,
 }>
 
-const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch', 'clear', 'tree', 'history'] as const;
+const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch', 'clear', 'tree', 'history', 'mkdir'] as const;
 type TerminalCommand = typeof TerminalCommands[number];
 
 type Command = {

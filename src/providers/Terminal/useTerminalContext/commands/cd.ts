@@ -4,7 +4,6 @@ export default function cd(
     args: string[],
     directory: Directory,
     currentDirectory: Directory[number],
-    setter: React.Dispatch<React.SetStateAction<Directory[number]>>
 ): CommandReturn<Directory[number]> {
     const path = args[0];
 
@@ -18,15 +17,15 @@ export default function cd(
             }
         }
 
-        if (root) setter(root);
-        return { error: false, msgs: [] };
+        if (root) {
+            return { 
+                error: false,
+                msgs: [],
+                out: root
+            };
+        }
     }
     
     const commandReturn = runPath(directory, currentDirectory, path);
-
-    if (commandReturn.out) {
-        setter(commandReturn.out);
-    }
-
     return commandReturn;
 }

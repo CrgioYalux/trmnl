@@ -43,7 +43,10 @@ export const useTerminalContext = (): TerminalContext => {
     const execCommand = ({ type, args }: Command): TerminalContextCommandReturn => {
         switch (type) {
             case 'cd':
-                const cdReturn = command.cd(args, directoryTree, currentDirectory, setCurrentDirectory);
+                const cdReturn = command.cd(args, directoryTree, currentDirectory);
+                if (cdReturn.out) {
+                    setCurrentDirectory(cdReturn.out);
+                }
                 return {
                     error: cdReturn.error,
                     msgs: [cdReturn.msgs[0]],
@@ -114,6 +117,19 @@ export const useTerminalContext = (): TerminalContext => {
                 return {
                     error: false,
                     msgs: history,
+                    out: {
+                        input: { idx: logCount, prompt, value: '' }
+                    }
+                }
+            case 'mkdir':
+                const mkdirReturn = command.mkdir(args, directoryTree, currentDirectory);
+                if (mkdirReturn.out) {
+                    let newDirectory: Directory[number] = mkdirReturn.out;
+                    setDirectoryTree((prev) => [...prev, newDirectory]);
+                }
+                return {
+                    error: mkdirReturn.error,
+                    msgs: mkdirReturn.msgs,
                     out: {
                         input: { idx: logCount, prompt, value: '' }
                     }
