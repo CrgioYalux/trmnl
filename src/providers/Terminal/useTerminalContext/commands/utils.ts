@@ -6,7 +6,7 @@ type Directory = Array<{
     isDirectory: boolean,
 }>
 
-const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch', 'clear', 'tree', 'history', 'mkdir'] as const;
+const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch', 'clear', 'tree', 'history', 'mkdir', 'rm'] as const;
 type TerminalCommand = typeof TerminalCommands[number];
 
 type Command = {
@@ -45,7 +45,9 @@ function runPath(directory: Directory, currentDirectory: Directory[number], path
             for (let j = 0; j < directory.length; j++) {
                 if (directory[j].name === parts[i]) {
                     if (
-                        (directory[j].parent === out.id && directory[j].isDirectory) || directory[j].parent === null
+                         directory[j].parent === null ||
+                         directory[j].parent === out.id && directory[j].isDirectory ||
+                         directory[j].parent === out.id && i === parts.length - 1 && !directory[j].isDirectory
                     ) {
                         found = true;
                         out = directory[j];
@@ -64,7 +66,7 @@ function runPath(directory: Directory, currentDirectory: Directory[number], path
     if (pathNotFound.length !== 0) {
         return {
             error: true,
-            msgs: [`${pathNotFound} : path does not exist`],
+            msgs: [`${pathNotFound} : Path does not exist`],
         };
     } 
     
@@ -73,6 +75,30 @@ function runPath(directory: Directory, currentDirectory: Directory[number], path
         msgs: [],
         out
     }
+}
+
+function relativeDirectoryTreeWalk(directory: Directory, currentDirectory: Directory[number], visited: Directory): void {
+    if (!visited.find((v) => v.id === currentDirectory.id)) {
+        visited.push(currentDirectory);
+    }
+
+    if (!currentDirectory.isDirectory) {
+        return;
+    }
+
+    for (let i = 0; i < directory.length; i++) {
+        if (currentDirectory.id === directory[i].parent) {
+            relativeDirectoryTreeWalk(directory, directory[i], visited);
+        }
+    }
+}
+
+function relativeDirectoryTree(directory: Directory, currentDirectory: Directory[number]): Directory {
+    const visited: Directory = [];
+
+    relativeDirectoryTreeWalk(directory, currentDirectory, visited);
+
+    return visited;
 }
 
 export type {
@@ -84,5 +110,6 @@ export type {
 
 export {
     TerminalCommands,
-    runPath
+    runPath,
+    relativeDirectoryTree
 }

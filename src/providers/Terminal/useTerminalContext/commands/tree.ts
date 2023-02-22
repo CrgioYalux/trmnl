@@ -1,4 +1,4 @@
-import { Directory, CommandReturn, runPath } from "./utils";
+import { Directory, CommandReturn, runPath, relativeDirectoryTree } from "./utils";
 
 function walk(
     directory: Directory,
@@ -27,30 +27,6 @@ function walk(
     }
 }
 
-function relativeDirectoryTreeWalk(directory: Directory, currentDirectory: Directory[number], visited: Directory): void {
-    if (!visited.find((v) => v.id === currentDirectory.id)) {
-        visited.push(currentDirectory);
-    }
-
-    if (!currentDirectory.isDirectory) {
-        return;
-    }
-
-    for (let i = 0; i < directory.length; i++) {
-        if (currentDirectory.id === directory[i].parent) {
-            relativeDirectoryTreeWalk(directory, directory[i], visited);
-        }
-    }
-}
-
-function relativeDirectoryTree(directory: Directory, currentDirectory: Directory[number]): Directory {
-    const visited: Directory = [];
-
-    relativeDirectoryTreeWalk(directory, currentDirectory, visited);
-
-    return visited;
-}
-
 export default function tree(
     args: string[],
     directory: Directory,
@@ -67,7 +43,7 @@ export default function tree(
         return {
             error: false,
             msgs: [],
-            out: { counts, logs }
+            out: { counts, logs },
         }
     }
 
@@ -82,8 +58,7 @@ export default function tree(
     }
 
     return {
-        error: commandReturn.error,
-        msgs: commandReturn.msgs,
-        out: { counts, logs }
+        error: true,
+        msgs: [`tree: ${commandReturn.msgs}`],
     }
 }

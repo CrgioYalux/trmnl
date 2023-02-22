@@ -11,21 +11,29 @@ export default function ls(args: string[], directory: Directory, currentDirector
             }
         }
 
-        return { error: false, msgs: names };
+        return {
+            error: false,
+            msgs: names
+        };
     }
 
     const commandReturn = runPath(directory, currentDirectory, path);
 
     if (commandReturn.out) {
-
         for (let i = 0; i < directory.length; i++) {
             if (commandReturn.out.id === directory[i].parent) {
                 names.push(directory[i].name);
             }
         }
 
-        return { error: false, msgs: names };
+        return {
+            error: false,
+            msgs: names
+        };
     }
 
-    return commandReturn;
+    return {
+        error: true,
+        msgs: [`ls: ${commandReturn.msgs[0]}`],
+    };
 }

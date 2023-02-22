@@ -27,5 +27,18 @@ export default function cd(
     }
     
     const commandReturn = runPath(directory, currentDirectory, path);
-    return commandReturn;
+
+    if (commandReturn.out) {
+        return {
+            error: false,
+            msgs: [''],
+            out: commandReturn.out,
+        }
+    }
+
+
+    return {
+        error: true,
+        msgs: [`cd: ${commandReturn.msgs[0]}`]
+    };
 }

@@ -1,7 +1,8 @@
 import { Directory, CommandReturn, runPath } from './utils';
+import { INITIAL_STATE } from '../consts';
 
 export default function mkdir(args: string[], directory: Directory, currentDirectory: Directory[number]): CommandReturn<Directory[number]> {
-    const path = args[0];
+    const path = args[0]?.split('/').filter((p) => p !== '').join('/');
 
     if (!path) {
         return {
@@ -10,20 +11,27 @@ export default function mkdir(args: string[], directory: Directory, currentDirec
         };
     }
 
-    const parts = path.split('/').filter((p) => p !== ''); // /documents/to_know/ => [documents, to_know]
-
-    // must check if the parent of the new directory exists, and if it does not have already a child with the same name passed here
+    const parts = path.split('/');
     const newDirName = parts[parts.length - 1];
-    const pathUntilParent = parts.slice(0, parts.length - 1).join('/');
+    const pathToParent = parts.slice(0, parts.length - 1).join('/');
     
-    const returnCommand = runPath(directory, currentDirectory, pathUntilParent);
+    const returnCommand = runPath(directory, currentDirectory, pathToParent);
+
     let dirAlreadyExists = false;
     let maxIdFound: number = -1;
 
     if (returnCommand.out) {
-        for (let i = 0; i < directory.length; i++) {
-            if (directory[i].parent === returnCommand.out.id && directory[i].name === newDirName) {
-                dirAlreadyExists = true;    
+        if (newDirName === INITIAL_STATE.currentDirectory.name) {
+            dirAlreadyExists = true;
+        }
+
+        for (let i = 0; i < directory.length && !dirAlreadyExists; i++) {
+            if (
+                directory[i].isDirectory &&
+                directory[i].name === newDirName &&
+                directory[i].parent === returnCommand.out.id
+            ) {
+                dirAlreadyExists = true;
             }
             if (directory[i].id > maxIdFound) {
                 maxIdFound = directory[i].id;
@@ -39,11 +47,11 @@ export default function mkdir(args: string[], directory: Directory, currentDirec
 
         let newDirPath: string = '';
 
-        if (pathUntilParent.length === 0) {
+        if (pathToParent.length === 0) {
             newDirPath = `/${newDirName}`;
         }
         else {
-            newDirPath = `/${pathUntilParent}/${newDirName}`;
+            newDirPath = `/${pathToParent}/${newDirName}`;
         }
 
         const newDirectory: Directory[number] = {
@@ -62,7 +70,7 @@ export default function mkdir(args: string[], directory: Directory, currentDirec
     }
 
     return {
-        error: returnCommand.error,
-        msgs: returnCommand.msgs,
+        error: true,
+        msgs: [`mkdir: ${returnCommand.msgs[0]}`],
     };
 }

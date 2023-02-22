@@ -87,7 +87,7 @@ export const useTerminalContext = (): TerminalContext => {
                     out: {
                         input: { idx: logCount, prompt, value: '' }
                     }
-                }
+                };
             case 'neofetch':
                 return {
                     error: false,
@@ -95,7 +95,7 @@ export const useTerminalContext = (): TerminalContext => {
                     out: {
                         input: { idx: logCount, prompt, value: '' }
                     }
-                }
+                };
             case 'help':
                 return {
                     error: false,
@@ -120,11 +120,11 @@ export const useTerminalContext = (): TerminalContext => {
                     out: {
                         input: { idx: logCount, prompt, value: '' }
                     }
-                }
+                };
             case 'mkdir':
                 const mkdirReturn = command.mkdir(args, directoryTree, currentDirectory);
                 if (mkdirReturn.out) {
-                    let newDirectory: Directory[number] = mkdirReturn.out;
+                    const newDirectory: Directory[number] = mkdirReturn.out;
                     setDirectoryTree((prev) => [...prev, newDirectory]);
                 }
                 return {
@@ -133,7 +133,20 @@ export const useTerminalContext = (): TerminalContext => {
                     out: {
                         input: { idx: logCount, prompt, value: '' }
                     }
+                };
+            case 'rm':
+                const rmReturn = command.rm(args, directoryTree, currentDirectory);
+                if (rmReturn.out) {
+                    const newDirectory: Directory = rmReturn.out;
+                    setDirectoryTree(() => [...newDirectory]);
                 }
+                return {
+                    error: rmReturn.error,
+                    msgs: rmReturn.msgs,
+                    out: {
+                        input: { idx: logCount, prompt, value: '' }
+                    }
+                };
             default:
                 return {
                     error: true,
