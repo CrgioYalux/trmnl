@@ -1,7 +1,7 @@
-import { Directory, CommandReturn, runPath } from './utils';
+import { DirectoryTree, Directory, CommandReturn, goToPath } from './utils';
 import { INITIAL_STATE } from '../consts';
 
-export default function mkdir(args: string[], directory: Directory, currentDirectory: Directory[number]): CommandReturn<Directory[number]> {
+export default function mkdir(args: string[], directoryTree: DirectoryTree, currentDirectory: Directory): CommandReturn<Directory> {
     const path = args[0]?.split('/').filter((p) => p !== '').join('/');
 
     if (!path) {
@@ -12,53 +12,53 @@ export default function mkdir(args: string[], directory: Directory, currentDirec
     }
 
     const parts = path.split('/');
-    const newDirName = parts[parts.length - 1];
-    const pathToParent = parts.slice(0, parts.length - 1).join('/');
+    const newDirectoryName = parts[parts.length - 1];
+    const pathToParentDirectory = parts.slice(0, parts.length - 1).join('/');
     
-    const returnCommand = runPath(directory, currentDirectory, pathToParent);
+    const commandReturn = goToPath(directoryTree, currentDirectory, pathToParentDirectory);
 
     let dirAlreadyExists = false;
     let maxIdFound: number = -1;
 
-    if (returnCommand.out) {
-        if (newDirName === INITIAL_STATE.currentDirectory.name) {
+    if (commandReturn.out) {
+        if (newDirectoryName === INITIAL_STATE.currentDirectory.name) {
             dirAlreadyExists = true;
         }
 
-        for (let i = 0; i < directory.length && !dirAlreadyExists; i++) {
+        for (let i = 0; i < directoryTree.length && !dirAlreadyExists; i++) {
             if (
-                directory[i].isDirectory &&
-                directory[i].name === newDirName &&
-                directory[i].parent === returnCommand.out.id
+                directoryTree[i].isDirectory &&
+                directoryTree[i].name === newDirectoryName &&
+                directoryTree[i].parent === commandReturn.out.id
             ) {
                 dirAlreadyExists = true;
             }
-            if (directory[i].id > maxIdFound) {
-                maxIdFound = directory[i].id;
+            if (directoryTree[i].id > maxIdFound) {
+                maxIdFound = directoryTree[i].id;
             }
         }
 
         if (dirAlreadyExists) {
             return {
                 error: true,
-                msgs: [`mkdir: cannot create directory '${path}': Already exists`]
+                msgs: [`mkdir: cannot create directoryTree '${path}': Already exists`]
             };
         }
 
-        let newDirPath: string = '';
+        let newDirectoryPath: string = '';
 
-        if (pathToParent.length === 0) {
-            newDirPath = `/${newDirName}`;
+        if (pathToParentDirectory.length === 0) {
+            newDirectoryPath = `/${newDirectoryName}`;
         }
         else {
-            newDirPath = `/${pathToParent}/${newDirName}`;
+            newDirectoryPath = `/${pathToParentDirectory}/${newDirectoryName}`;
         }
 
-        const newDirectory: Directory[number] = {
-            parent: returnCommand.out.id,
+        const newDirectory: Directory = {
+            parent: commandReturn.out.id,
             id: maxIdFound + 1,
-            name: newDirName,
-            path: newDirPath, // if pathUntilParent === '' => //newDirName
+            name: newDirectoryName,
+            path: newDirectoryPath, // if pathUntilParent === '' => //newDirectoryName
             isDirectory: true
         };
 
@@ -71,6 +71,6 @@ export default function mkdir(args: string[], directory: Directory, currentDirec
 
     return {
         error: true,
-        msgs: [`mkdir: ${returnCommand.msgs[0]}`],
+        msgs: [`mkdir: ${commandReturn.msgs[0]}`],
     };
 }

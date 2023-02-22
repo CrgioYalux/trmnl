@@ -1,10 +1,12 @@
-type Directory = Array<{
+type Directory = {
     id: number,
     name: string,
     path: string,
     parent: number | null,
     isDirectory: boolean,
-}>
+}
+
+type DirectoryTree = Directory[];
 
 const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch', 'clear', 'tree', 'history', 'mkdir', 'rm'] as const;
 type TerminalCommand = typeof TerminalCommands[number];
@@ -20,10 +22,10 @@ type CommandReturn<T> = {
     out?: T,
 }
 
-function runPath(directory: Directory, currentDirectory: Directory[number], path: string = ''): CommandReturn<Directory[number]> {
+function goToPath(directoryTree: DirectoryTree, currentDirectory: Directory, path: string = ''): CommandReturn<Directory> {
     const parts = path.split('/');
 
-    let out: Directory[number] = currentDirectory;
+    let out: Directory = currentDirectory;
     let pathNotFound: string = '';
 
     for (let i = 0; i < parts.length; i++) {
@@ -33,24 +35,24 @@ function runPath(directory: Directory, currentDirectory: Directory[number], path
 
         let found = false;
         if (parts[i] === '..') {
-            for (let j = 0; j < directory.length; j++) {
-                if (out.parent === directory[j].id) {
+            for (let j = 0; j < directoryTree.length; j++) {
+                if (out.parent === directoryTree[j].id) {
                     found = true;
-                    out = directory[j];
+                    out = directoryTree[j];
                     break;
                 }
             }
         }
         else if (parts[i]) {
-            for (let j = 0; j < directory.length; j++) {
-                if (directory[j].name === parts[i]) {
+            for (let j = 0; j < directoryTree.length; j++) {
+                if (directoryTree[j].name === parts[i]) {
                     if (
-                         directory[j].parent === null ||
-                         directory[j].parent === out.id && directory[j].isDirectory ||
-                         directory[j].parent === out.id && i === parts.length - 1 && !directory[j].isDirectory
+                         directoryTree[j].parent === null ||
+                         directoryTree[j].parent === out.id && directoryTree[j].isDirectory ||
+                         directoryTree[j].parent === out.id && i === parts.length - 1 && !directoryTree[j].isDirectory
                     ) {
                         found = true;
-                        out = directory[j];
+                        out = directoryTree[j];
                         break;
                     }
                 }
@@ -77,7 +79,7 @@ function runPath(directory: Directory, currentDirectory: Directory[number], path
     }
 }
 
-function relativeDirectoryTreeWalk(directory: Directory, currentDirectory: Directory[number], visited: Directory): void {
+function relativeDirectoryTreeWalk(directoryTree: DirectoryTree, currentDirectory: Directory, visited: DirectoryTree): void {
     if (!visited.find((v) => v.id === currentDirectory.id)) {
         visited.push(currentDirectory);
     }
@@ -86,22 +88,23 @@ function relativeDirectoryTreeWalk(directory: Directory, currentDirectory: Direc
         return;
     }
 
-    for (let i = 0; i < directory.length; i++) {
-        if (currentDirectory.id === directory[i].parent) {
-            relativeDirectoryTreeWalk(directory, directory[i], visited);
+    for (let i = 0; i < directoryTree.length; i++) {
+        if (currentDirectory.id === directoryTree[i].parent) {
+            relativeDirectoryTreeWalk(directoryTree, directoryTree[i], visited);
         }
     }
 }
 
-function relativeDirectoryTree(directory: Directory, currentDirectory: Directory[number]): Directory {
-    const visited: Directory = [];
+function relativeDirectoryTree(directoryTree: DirectoryTree, currentDirectory: Directory): DirectoryTree {
+    const visited: DirectoryTree = [];
 
-    relativeDirectoryTreeWalk(directory, currentDirectory, visited);
+    relativeDirectoryTreeWalk(directoryTree, currentDirectory, visited);
 
     return visited;
 }
 
 export type {
+    DirectoryTree,
     Directory,
     TerminalCommand,
     Command,
@@ -110,6 +113,6 @@ export type {
 
 export {
     TerminalCommands,
-    runPath,
+    goToPath,
     relativeDirectoryTree
 }

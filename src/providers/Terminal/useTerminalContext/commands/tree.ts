@@ -1,24 +1,24 @@
-import { Directory, CommandReturn, runPath, relativeDirectoryTree } from "./utils";
+import { DirectoryTree, Directory, CommandReturn, goToPath, relativeDirectoryTree } from "./utils";
 
 function walk(
-    directory: Directory,
-    currentDirectory: Directory[number],
+    directoryTree: DirectoryTree,
+    currentDirectory: Directory,
     prefix: string,
     logs: string[],
     counts: { dirs: number, files: number }
 ) {
-    for (let i = 0; i < directory.length; i++) {
-        if (directory[i].parent === currentDirectory.id) {
-            const children = directory.filter((child) => child.parent === directory[i].parent);
+    for (let i = 0; i < directoryTree.length; i++) {
+        if (directoryTree[i].parent === currentDirectory.id) {
+            const children = directoryTree.filter((child) => child.parent === directoryTree[i].parent);
 
-            const link = directory[i].id === children.pop()?.id ? ["└── ", "    "] : ["├── ", "│   "];
-            const log = prefix + link[0] + directory[i].name;
+            const link = directoryTree[i].id === children.pop()?.id ? ["└── ", "    "] : ["├── ", "│   "];
+            const log = prefix + link[0] + directoryTree[i].name;
 
             logs.push(log);
 
-            if (directory[i].isDirectory) {
+            if (directoryTree[i].isDirectory) {
                 counts.dirs += 1;
-                walk(directory, directory[i], `${prefix}${link[1]}`, logs, counts);
+                walk(directoryTree, directoryTree[i], `${prefix}${link[1]}`, logs, counts);
             }
             else {
                 counts.files += 1;
@@ -29,8 +29,8 @@ function walk(
 
 export default function tree(
     args: string[],
-    directory: Directory,
-    currentDirectory: Directory[number]
+    directoryTree: DirectoryTree,
+    currentDirectory: Directory
 ): CommandReturn<{ counts: { dirs: number, files: number }, logs: string[] }> {
     const path = args[0];
     const counts = { dirs: 0, files: 0 };
@@ -38,7 +38,7 @@ export default function tree(
 
     if (!path) {
         logs.push(currentDirectory.name);
-        walk(directory, currentDirectory, '', logs, counts);
+        walk(directoryTree, currentDirectory, '', logs, counts);
 
         return {
             error: false,
@@ -47,18 +47,24 @@ export default function tree(
         }
     }
 
-    const commandReturn = runPath(directory, currentDirectory, path);
+    const commandReturn = goToPath(directoryTree, currentDirectory, path);
 
     if (commandReturn.out) {
-        const relativeDirectory = relativeDirectoryTree(directory, commandReturn.out);
+        const printDirectoryTree = relativeDirectoryTree(directoryTree, commandReturn.out);
 
         logs.push(commandReturn.out.name);
 
-        walk(relativeDirectory, commandReturn.out, '', logs, counts);
+        walk(printDirectoryTree, commandReturn.out, '', logs, counts);
+
+        return {
+            error: false,
+            msgs: [''],
+            out: { counts, logs },
+        }
     }
 
     return {
         error: true,
-        msgs: [`tree: ${commandReturn.msgs}`],
+        msgs: [`tree: ${commandReturn.msgs[0]}`],
     }
 }

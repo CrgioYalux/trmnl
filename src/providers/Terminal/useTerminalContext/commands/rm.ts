@@ -1,4 +1,4 @@
-import { Directory, CommandReturn, runPath, relativeDirectoryTree } from "./utils";
+import { DirectoryTree, Directory, CommandReturn, goToPath, relativeDirectoryTree } from "./utils";
 
 function deleteAtAndFilter<T>(arr: T[], idx: number): T | undefined {
     if (idx >= arr.length || idx < 0) {
@@ -37,7 +37,7 @@ function deleteAtAndFilter<T>(arr: T[], idx: number): T | undefined {
     return deleted;
 }
 
-export default function rm(args: string[], directory: Directory, currentDirectory: Directory[number]): CommandReturn<Directory> {
+export default function rm(args: string[], directoryTree: DirectoryTree, currentDirectory: Directory): CommandReturn<DirectoryTree> {
     const path = args[0];
 
     if (!path) {
@@ -47,7 +47,7 @@ export default function rm(args: string[], directory: Directory, currentDirector
         };
     }
 
-    const commandReturn = runPath(directory, currentDirectory, path);
+    const commandReturn = goToPath(directoryTree, currentDirectory, path);
 
     if (commandReturn.out) {
         if (commandReturn.out.id === currentDirectory.id) {
@@ -57,20 +57,20 @@ export default function rm(args: string[], directory: Directory, currentDirector
             };
         }
 
-        const relativeDirectory = relativeDirectoryTree(directory, commandReturn.out);
+        const removeDirectoryTree = relativeDirectoryTree(directoryTree, commandReturn.out);
 
-        if (relativeDirectory.find((dir) => dir.parent === null)) { // trying to delete the whole directory tree (which is bad)
+        if (removeDirectoryTree.find((dir) => dir.parent === null)) { // trying to delete the whole directory tree (which is bad)
             return {
                 error: true,
                 msgs: ["rm: cannot remove: Root directory"],
-                out: directory
+                out: directoryTree
             }
         }
 
-        for (let i = 0; i < relativeDirectory.length; i++) {
-            for (let j = 0; j < directory.length; j++) {
-                if (relativeDirectory[i].id === directory[j].id) {
-                    deleteAtAndFilter(directory, j);
+        for (let i = 0; i < removeDirectoryTree.length; i++) {
+            for (let j = 0; j < directoryTree.length; j++) {
+                if (removeDirectoryTree[i].id === directoryTree[j].id) {
+                    deleteAtAndFilter(directoryTree, j);
                     break;
                 }
             }
@@ -79,7 +79,7 @@ export default function rm(args: string[], directory: Directory, currentDirector
         return {
             error: false,
             msgs: [''],
-            out: directory
+            out: directoryTree
         };
     }
 

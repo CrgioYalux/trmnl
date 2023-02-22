@@ -1,7 +1,7 @@
-import { Directory } from './commands/utils';
+import { DirectoryTree, Directory } from './commands/utils';
 import { createPrompt } from './helpers';
 
-const root: Directory[number] = {
+const root: Directory = {
     id: 0,
     name: '~',
     isDirectory: true,
@@ -9,7 +9,7 @@ const root: Directory[number] = {
     path: '/'
 };
 
-const directoryTree: Directory = [
+const directoryTree: DirectoryTree = [
     root,
     {
         id: 1,

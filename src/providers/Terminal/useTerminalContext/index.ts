@@ -3,7 +3,7 @@ import { useState, useEffect, createContext } from 'react';
 import { INITIAL_STATE } from './consts';
 import { createPrompt, sliceFirstWord } from './helpers';
 import command from './commands';
-import { Directory, TerminalCommand, TerminalCommands, Command, CommandReturn } from './commands/utils';
+import { DirectoryTree, Directory, TerminalCommand, TerminalCommands, Command, CommandReturn } from './commands/utils';
 
 type TerminalInput = {
     idx: number,
@@ -18,8 +18,8 @@ export type TerminalContextCommandReturn = CommandReturn<{
 interface TerminalState {
     logs: TerminalContextCommandReturn[];
     prompt: string;
-    directoryTree: Directory;
-    currentDirectory: Directory[number];
+    directoryTree: DirectoryTree;
+    currentDirectory: Directory;
 }
 
 export type TerminalContext = TerminalState & {
@@ -30,8 +30,8 @@ export const Context = createContext<TerminalContext>(INITIAL_STATE.terminalCont
 
 export const useTerminalContext = (): TerminalContext => {
     const [prompt, setPrompt] = useState<string>(INITIAL_STATE.prompt);
-    const [directoryTree, setDirectoryTree] = useState(INITIAL_STATE.directoryTree);
-    const [currentDirectory, setCurrentDirectory] = useState<Directory[number]>(INITIAL_STATE.currentDirectory);
+    const [directoryTree, setDirectoryTree] = useState<DirectoryTree>(INITIAL_STATE.directoryTree);
+    const [currentDirectory, setCurrentDirectory] = useState<Directory>(INITIAL_STATE.currentDirectory);
     const [logCount, setLogCount] = useState<number>(0);
     const [logs, setLogs] = useState<TerminalContextCommandReturn[]>([]);
     const [history, setHistory] = useState<string[]>([]);
@@ -124,7 +124,7 @@ export const useTerminalContext = (): TerminalContext => {
             case 'mkdir':
                 const mkdirReturn = command.mkdir(args, directoryTree, currentDirectory);
                 if (mkdirReturn.out) {
-                    const newDirectory: Directory[number] = mkdirReturn.out;
+                    const newDirectory: Directory = mkdirReturn.out;
                     setDirectoryTree((prev) => [...prev, newDirectory]);
                 }
                 return {
@@ -137,8 +137,8 @@ export const useTerminalContext = (): TerminalContext => {
             case 'rm':
                 const rmReturn = command.rm(args, directoryTree, currentDirectory);
                 if (rmReturn.out) {
-                    const newDirectory: Directory = rmReturn.out;
-                    setDirectoryTree(() => [...newDirectory]);
+                    const newDirectoryTree: DirectoryTree = rmReturn.out;
+                    setDirectoryTree(() => [...newDirectoryTree]);
                 }
                 return {
                     error: rmReturn.error,

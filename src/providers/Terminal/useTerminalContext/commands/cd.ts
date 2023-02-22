@@ -1,18 +1,18 @@
-import { Directory, CommandReturn, runPath } from "./utils";
+import { DirectoryTree, Directory, CommandReturn, goToPath } from "./utils";
 
 export default function cd(
     args: string[],
-    directory: Directory,
-    currentDirectory: Directory[number],
-): CommandReturn<Directory[number]> {
+    directoryTree: DirectoryTree,
+    currentDirectory: Directory,
+): CommandReturn<Directory> {
     const path = args[0];
 
     if (!path) {
-        let root: Directory[number] | null = null;
+        let root: Directory | null = null;
     
-        for (let i = 0; i < directory.length; i++) {
-            if (directory[i].parent === null) {
-                root = directory[i];
+        for (let i = 0; i < directoryTree.length; i++) {
+            if (directoryTree[i].parent === null) {
+                root = directoryTree[i];
                 break;
             }
         }
@@ -26,7 +26,7 @@ export default function cd(
         }
     }
     
-    const commandReturn = runPath(directory, currentDirectory, path);
+    const commandReturn = goToPath(directoryTree, currentDirectory, path);
 
     if (commandReturn.out) {
         return {
@@ -35,7 +35,6 @@ export default function cd(
             out: commandReturn.out,
         }
     }
-
 
     return {
         error: true,

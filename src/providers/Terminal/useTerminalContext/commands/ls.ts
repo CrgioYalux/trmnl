@@ -1,13 +1,13 @@
-import { Directory, runPath, CommandReturn } from "./utils";
+import { DirectoryTree, Directory, goToPath, CommandReturn } from "./utils";
 
-export default function ls(args: string[], directory: Directory, currentDirectory: Directory[number]): CommandReturn<Directory[number]> {
+export default function ls(args: string[], directoryTree: DirectoryTree, currentDirectory: Directory): CommandReturn<Directory> {
     const path = args[0];
     const names: string[] = [];
 
     if (!path) {
-        for (let i = 0; i < directory.length; i++) {
-            if (currentDirectory.id === directory[i].parent) {
-                names.push(directory[i].name);
+        for (let i = 0; i < directoryTree.length; i++) {
+            if (currentDirectory.id === directoryTree[i].parent) {
+                names.push(directoryTree[i].name);
             }
         }
 
@@ -17,12 +17,12 @@ export default function ls(args: string[], directory: Directory, currentDirector
         };
     }
 
-    const commandReturn = runPath(directory, currentDirectory, path);
+    const commandReturn = goToPath(directoryTree, currentDirectory, path);
 
     if (commandReturn.out) {
-        for (let i = 0; i < directory.length; i++) {
-            if (commandReturn.out.id === directory[i].parent) {
-                names.push(directory[i].name);
+        for (let i = 0; i < directoryTree.length; i++) {
+            if (commandReturn.out.id === directoryTree[i].parent) {
+                names.push(directoryTree[i].name);
             }
         }
 
