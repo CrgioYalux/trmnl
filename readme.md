@@ -1,7 +1,7 @@
-# trmnl
-## A terminal <sub><sup>*(not really)*</sup></sub> in the browser 
-Made with [React](https://reactjs.org/). What a surprise, am i
-right.  
+# trmnl, terminal <sub><sup>*(not really)*</sup></sub> in the browser   
+
+Made with [React](https://reactjs.org/). What a surprise, am i right.   
+
 ---
   
 ### Why
@@ -14,10 +14,13 @@ Basically, with this project, I wanted to **implement some of those minimal oper
 
 ### Some screenshoots
 
-![Running commands `tree` (at root directory), `help` and `history`](/docs/images/1.png)
-Running commands `tree` (at root directory), `help` and `history`.
+- Commands `tree`, `help` and `history`  
+![Running commands tree, help and history](/docs/images/1.png)  
+The user's home directory can only be accessed as '~'.  
 
----
+- Commands `mkdir` and `rm`  
+![Running commands mkdir and rm](/docs/images/2.png)  
+Relative and absolute paths can be used.  
 
 ### Developing fun facts
 - [Mon, Feb 20 2023]   
