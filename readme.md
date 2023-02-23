@@ -1,6 +1,6 @@
-# trmnl, terminal <sub><sup>*(not really)*</sup></sub> in the browser   
-
-Made with [React](https://reactjs.org/). What a surprise, am i right.   
+# trmnl  
+A terminal <sub><sup>*(not really)*</sup></sub> in the browser.  
+Made with [React](https://reactjs.org/). What a surprise, am i right.  
 
 ---
   
