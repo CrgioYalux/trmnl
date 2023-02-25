@@ -29,7 +29,7 @@
 
     padding: calc(var(--StatusBar-gap) * 1) 0;
 
-    color: var(--secondary-color-l-low);
+    color: var(--secondary-color-l-base);
 }
 
 .StatusBar__item {
@@ -53,15 +53,33 @@
     cursor: pointer;
 }
 
-.StatusBar__item.--active {
+.StatusBar__item.envs_item {
+    padding: 0;
+    border: 0;
+}
+
+.StatusBar__item.envs_item > span {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+}
+
+.StatusBar__item.envs_item > input {
+    display: none;
+}
+
+.StatusBar__item.envs_item > input:checked + span {
+    color: var(--brand-color-l-highest);
     border: 2px solid currentColor;
 }
 
-.StatusBar__envs_box > li:last-child {
+.StatusBar__envs_box > label:last-child {
     margin-right: auto;
 }
 
-.StatusBar__envs_box > li:first-child {
+.StatusBar__envs_box > label:first-child {
     margin-left: 10px;
 }
 
@@ -76,5 +94,8 @@
 .StatusBar__datetime_box {
     flex-shrink: 0;
     color: var(--secondary-color-l-base);
-    gap: calc(var(--StatusBar-gap) * 2);
+    gap: calc(var(--StatusBar-gap) * 4);
+    font-size: 1em;
+    font-weight: 800;
+    letter-spacing: 1px;
 }
