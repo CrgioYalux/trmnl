@@ -1,9 +1,7 @@
 const WeekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as const;
-
 type WeekDay = typeof WeekDays[number];
 
 const YearMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as const;
-
 type YearMonth = typeof YearMonths[number];
 
 type DateTime = {
@@ -25,11 +23,11 @@ function getDateString(): string {
 function getTimeString(): string {
     const now = new Date();
 
-    const _ = (n: number): string => n < 10 ? `0${n}` : `${n}`;
+    const format = (n: number): string => n < 10 ? `0${n}` : `${n}`;
 
-    let seconds = _(now.getSeconds());
-    let minutes = _(now.getMinutes());
-    let hours = _(now.getHours());
+    const seconds = format(now.getSeconds());
+    const minutes = format(now.getMinutes());
+    const hours = format(now.getHours());
 
     return `${hours}:${minutes}:${seconds}`;
 }
@@ -41,8 +39,5 @@ function getNowDateTime(): DateTime {
     }
 }
 
-export {
-    getNowDateTime,
-    type DateTime
-}
-
+export type { DateTime };
+export { getNowDateTime };
