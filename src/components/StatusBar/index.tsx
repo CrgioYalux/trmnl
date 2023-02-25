@@ -48,21 +48,13 @@ export const StatusBar: React.FC<StatusBarProps> = ({ className = '' }) => {
                     onClick={() => switchPlasmaBackgroundVisibility()}
                     tabIndex={NUMOF_ENVS + 1}
                 >bg</li>
-                <li 
-                    className='StatusBar__item system_options_item'
-                    tabIndex={NUMOF_ENVS + 2}
-                >En</li>
                 <li
                     className='StatusBar__item system_options_item'
                     onClick={() => switchTheme()}
-                    tabIndex={NUMOF_ENVS + 3}
+                    tabIndex={NUMOF_ENVS + 2}
                 >
                 {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
                 </li>
-                <li 
-                    className='StatusBar__item system_options_item'
-                    tabIndex={NUMOF_ENVS + 4}
-                >Q</li>
             </ul>
         </div>
     );
