@@ -22,6 +22,62 @@ type CommandReturn<T> = {
     out?: T,
 }
 
+function deleteAtAndFilter<T>(arr: T[], idx: number): T | undefined {
+    if (idx >= arr.length || idx < 0) {
+        return undefined;
+    }
+
+    if (idx === 0) {
+        return arr.shift();
+    }
+
+    if (idx === arr.length - 1) {
+        return arr.pop();
+    }
+    
+    let found = false;
+    let deleted: T | undefined = undefined;
+
+    for (let i = 0; i < arr.length; i++) {
+        if (found) {
+            arr[i - 1] = arr[i];
+        }
+        if (i === idx) {
+            if (arr[i + 1] !== undefined) {
+                found = true;
+                deleted = arr[i];
+                arr[i] = null as T;
+            }
+            else {
+                break;
+            }
+        }
+    }
+
+    arr.pop();
+
+    return deleted;
+}
+
+function sliceFromDirectoryTree(directoryTree: DirectoryTree, slice: DirectoryTree): DirectoryTree {
+    const out: DirectoryTree = [];
+
+    for (let i = 0; i < directoryTree.length; i++) {
+        let found: boolean = false;
+        for (let j = 0; j < slice.length; j++) {
+            if (directoryTree[i].id === slice[j].id) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            out.push(directoryTree[i]);
+        }
+    }
+
+    return out;
+}
+
 function goToPath(directoryTree: DirectoryTree, currentDirectory: Directory, path: string = ''): CommandReturn<Directory> {
     const parts = path.split('/');
 
@@ -113,6 +169,7 @@ export type {
 
 export {
     TerminalCommands,
+    sliceFromDirectoryTree,
     goToPath,
     relativeDirectoryTree
 }
