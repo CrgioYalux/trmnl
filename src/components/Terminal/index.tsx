@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 
-import { useTerminal } from '../../providers/Terminal/useTerminal';
+import { useTerminalContext } from '../../providers/Terminal';
 import { TerminalLogs } from './TerminalLogs';
 import { TerminalInput } from './TerminalInput';
 
 import './Terminal.css';
 
 export const Terminal: React.FC<{ className?: string }> = ({ className = '' }) => {
-    const { interpretInput, logs, prompt } = useTerminal();
+    const [state, actions] = useTerminalContext();
     const [value, setValue] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -16,12 +16,12 @@ export const Terminal: React.FC<{ className?: string }> = ({ className = '' }) =
             inputRef.current.focus();
             inputRef.current.scrollIntoView();
         }
-    }, [logs]);
+    }, [state.logs]);
 
     const handleSubmit = (event: React.SyntheticEvent) => {
         event.preventDefault();
         
-        interpretInput(value);
+        actions.interpretInput(value);
     
         setValue('');
     };
@@ -32,12 +32,12 @@ export const Terminal: React.FC<{ className?: string }> = ({ className = '' }) =
             onSubmit={handleSubmit}
             onClick={() => { inputRef.current && inputRef.current.focus(); }}
         >
-            <TerminalLogs logs={logs} />
+            <TerminalLogs />
             <TerminalInput
                 ref={inputRef}
                 value={value}
                 onChange={(event) => setValue(event.target.value)}
-                prompt={prompt}
+                prompt={state.prompt}
                 usable
             />
         </form>
