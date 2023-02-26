@@ -1,5 +1,5 @@
-import { DirectoryTree, Directory } from './commands/utils';
 import { createPrompt } from './helpers';
+import type { DirectoryTree, Directory } from './commands/utils';
 
 const root: Directory = {
     id: 0,

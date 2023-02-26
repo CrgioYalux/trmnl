@@ -3,7 +3,8 @@ import { useState, useEffect, createContext } from 'react';
 import { INITIAL_STATE } from './consts';
 import { createPrompt, sliceFirstWord } from './helpers';
 import command from './commands';
-import { DirectoryTree, Directory, TerminalCommand, TerminalCommands, Command, CommandReturn } from './commands/utils';
+import { TerminalCommands } from './commands/utils';
+import type { DirectoryTree, Directory, TerminalCommand, Command, CommandReturn } from './commands/utils';
 
 type TerminalInput = {
     idx: number,

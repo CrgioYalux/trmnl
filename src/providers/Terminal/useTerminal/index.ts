@@ -1,4 +1,5 @@
 import { useContext } from "react";
-import { TerminalContext, Context } from "../useTerminalContext";
+import {  Context } from "../useTerminalContext";
+import type { TerminalContext } from "../useTerminalContext";
 
 export const useTerminal = () => useContext<TerminalContext>(Context);

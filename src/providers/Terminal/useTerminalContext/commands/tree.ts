@@ -1,4 +1,5 @@
-import { DirectoryTree, Directory, CommandReturn, goToPath, relativeDirectoryTree } from "./utils";
+import { goToPath, relativeDirectoryTree } from "./utils";
+import type { DirectoryTree, Directory, CommandReturn } from "./utils";
 
 function walk(
     directoryTree: DirectoryTree,

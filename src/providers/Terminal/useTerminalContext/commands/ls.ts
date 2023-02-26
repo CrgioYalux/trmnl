@@ -1,4 +1,5 @@
-import { DirectoryTree, Directory, goToPath, CommandReturn } from "./utils";
+import { goToPath } from "./utils";
+import type { DirectoryTree, Directory, CommandReturn } from "./utils";
 
 export default function ls(args: string[], directoryTree: DirectoryTree, currentDirectory: Directory): CommandReturn<Directory> {
     const path = args[0];

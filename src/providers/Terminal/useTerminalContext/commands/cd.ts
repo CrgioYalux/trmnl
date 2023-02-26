@@ -1,4 +1,5 @@
-import { DirectoryTree, Directory, CommandReturn, goToPath } from "./utils";
+import { goToPath } from "./utils";
+import type { DirectoryTree, Directory, CommandReturn } from "./utils";
 
 export default function cd(
     args: string[],

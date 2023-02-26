@@ -1,5 +1,6 @@
-import { DirectoryTree, Directory, CommandReturn, goToPath } from './utils';
 import { INITIAL_STATE } from '../consts';
+import { goToPath } from "./utils";
+import type { DirectoryTree, Directory, CommandReturn } from "./utils";
 
 export default function mkdir(args: string[], directoryTree: DirectoryTree, currentDirectory: Directory): CommandReturn<Directory> {
     const path = args[0]?.split('/').filter((p) => p !== '').join('/');

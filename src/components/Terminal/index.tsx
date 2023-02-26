@@ -1,9 +1,10 @@
-import './Terminal.css';
-
 import { useState, useEffect, useRef } from 'react';
+
 import { useTerminal } from '../../providers/Terminal/useTerminal';
 import { TerminalLogs } from './TerminalLogs';
 import { TerminalInput } from './TerminalInput';
+
+import './Terminal.css';
 
 export const Terminal: React.FC<{ className?: string }> = ({ className = '' }) => {
     const { interpretInput, logs, prompt } = useTerminal();
