@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
-import { Theme, getSystemTheme, applyTheme } from './theme';
-import { Lang } from "./lang";
+import { useTheme } from "../../hooks/useTheme";
+import type { Theme } from "../../hooks/useTheme/utils";
 
 interface SystemOptionsContext {
     switchPlasmaBackgroundVisibility: () => void;
@@ -8,9 +8,6 @@ interface SystemOptionsContext {
 
     switchTheme: () => void;
     theme: Theme;
-
-    switchLang: () => void;
-    lang: Lang;
 }
 
 const SystemOptionsContext = createContext<SystemOptionsContext>({
@@ -19,9 +16,6 @@ const SystemOptionsContext = createContext<SystemOptionsContext>({
 
     switchTheme: () => {},
     theme: 'dark',
-
-    switchLang: () => {},
-    lang: 'EN',
 });
 
 export const useSystemOptions = () => useContext<SystemOptionsContext>(SystemOptionsContext);
@@ -31,41 +25,19 @@ interface SystemOptionsProviderProps {
 };
 
 export const SystemOptionsProvider: React.FC<SystemOptionsProviderProps> = ({ children }) => {
-    const [theme, setTheme] = useState<Theme>(() => {
-        const theme = getSystemTheme();
-        applyTheme(theme);
-        return theme;
-    });
-    const [lang, setLang] = useState<Lang>('EN');
     const [plasmaBackgroundVisibility, setPlasmaBackgroundVisibility] = useState<boolean>(false);
+    const [theme, switchTheme] = useTheme();
 
     const switchPlasmaBackgroundVisibility = () => {
         setPlasmaBackgroundVisibility((prev) => !prev);
-    };
-
-    const switchLang = () => {
-        setLang((prev) => prev === 'EN' ? 'ES' : 'EN');
-    };
-
-    const switchTheme = () => {
-        setTheme(
-            (prev) => {
-                const updated = prev === 'dark' ? 'light' : 'dark';
-                applyTheme(updated);
-                return updated;
-            }
-        );
     };
 
     const value: SystemOptionsContext = {
         switchPlasmaBackgroundVisibility,
         plasmaBackgroundVisibility,
 
-        switchTheme,
         theme,
-
-        switchLang,
-        lang,
+        switchTheme,
     };
 
     return (

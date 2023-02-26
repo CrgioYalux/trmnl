@@ -1,8 +1,8 @@
 const Themes = ["dark", "light"] as const;
 
-export type Theme = typeof Themes[number];
+type Theme = typeof Themes[number];
 
-export function getSystemTheme(): Theme {
+function getSystemTheme(): Theme {
     if (
         window.matchMedia &&
         window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -10,6 +10,9 @@ export function getSystemTheme(): Theme {
     return 'light';
 }
 
-export function applyTheme(theme: Theme) {
+function applyTheme(theme: Theme) {
     document.documentElement.className = theme;
 }
+
+export type { Theme };
+export { Themes, getSystemTheme, applyTheme };
