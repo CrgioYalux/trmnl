@@ -8,7 +8,7 @@ type Directory = {
 
 type DirectoryTree = Directory[];
 
-const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch', 'clear', 'tree', 'history', 'mkdir', 'rm'] as const;
+const TerminalCommands = ['help', 'cd', 'ls', 'pwd', 'neofetch', 'clear', 'tree', 'history', 'mkdir', 'rm', 'echo'] as const;
 type TerminalCommand = typeof TerminalCommands[number];
 
 type Command = {

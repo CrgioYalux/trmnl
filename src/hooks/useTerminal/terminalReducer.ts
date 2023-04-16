@@ -57,11 +57,16 @@ function terminalReducer(state: InternalTerminalState, action: TerminalReducerAc
     else if (action.command.type === 'tree') {
         const tree = command.tree(action.command.args, state.directoryTree, state.currentDirectory);
         msgs = tree.msgs;
-        error = true;
+        error = tree.error;
 
         if (!tree.error && tree.out) {
             msgs = [...tree.out.logs, `files: ${tree.out.counts.files} | dirs: ${tree.out.counts.dirs}`];
         }
+    }
+    else if (action.command.type === 'echo') {
+        const echo = command.echo(action.command.args, state.directoryTree, state.currentDirectory);
+        msgs = echo.msgs;
+        error = echo.error;
     }
     else if (action.command.type === 'neofetch') {
         msgs = INITIAL_STATE.neofetch;
