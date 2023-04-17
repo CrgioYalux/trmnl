@@ -68,6 +68,16 @@ function terminalReducer(state: InternalTerminalState, action: TerminalReducerAc
         msgs = echo.msgs;
         error = echo.error;
     }
+    else if (action.command.type === 'touch') {
+        const touch = command.touch(action.command.args, state.directoryTree, state.currentDirectory);
+        msgs = touch.msgs;
+        error = touch.error;
+
+        if (touch.out) {
+            newDirectoryTree = [...state.directoryTree];
+            newDirectoryTree.push(touch.out);
+        }
+    }
     else if (action.command.type === 'neofetch') {
         msgs = INITIAL_STATE.neofetch;
     }
