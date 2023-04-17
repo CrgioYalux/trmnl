@@ -21,6 +21,7 @@
 
 
 .TerminalInput {
+
     display: flex;
     flex-direction: row;
     gap: calc(var(--Terminal-gap) / 2);
@@ -37,6 +38,7 @@
 }
 
 .TerminalInput__input {
+    flex: 1 1 auto;
     background-color: transparent;
 
     border: 0;
