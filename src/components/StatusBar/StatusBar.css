@@ -1,101 +1,68 @@
 .StatusBar {
     width: 100%;
-    flex: 0 0 25px;
+
+    font-size: inherit;
+    padding: 0.25em 0;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+    row-gap: .25em;
 
     background-color: var(--primary-color-l-high);
     border-radius: calc(var(--brand-border-radius) * 1);
-
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-
-    --StatusBar-gap: 2.5px;
-
-    font-size: clamp(.75rem, 4vw, .9rem);
 }
 
 .StatusBar__box {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: calc(var(--StatusBar-gap) * 1);
-
-    list-style: none;
-
-    flex: 1 1 auto;
-    height: 100%;
-
-
-    padding: calc(var(--StatusBar-gap) * 1) 0;
 
     color: var(--secondary-color-l-base);
+    font-size: 1em;
+    font-weight: normal;
+
+    gap: .5em;
 }
 
-.StatusBar__item {
-    display: grid;
-    place-items: center;
+.StatusBar__title_box {
+    justify-content: start;
+    padding-left: .5em;
+}
 
+.StatusBar__system_options_box {
     height: 100%;
-    aspect-ratio: auto 1/1;
+    justify-content: end;
+    padding-right: .5em;
+}
 
-    border-radius: 6px;
+.StatusBar__system_options_box > button {
+    flex: 0 0 auto;
+    min-width: 16ch;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    background-color: var(--primary-color-l-base);
-    border: 2px solid var(--primary-color-l-base);
+    color: inherit;
+    background-color: transparent;
 
-    line-height: 1;
-    font-size: 1em;
-    font-weight: 800;
-    padding: .12em;
+    border: 1px solid currentColor;
+    border-radius: calc(var(--brand-border-radius) * 1);
 
-    user-select: none;
+    padding: 0 .5em;
     cursor: pointer;
 }
 
-.StatusBar__item.envs_item {
+.StatusBar__system_options_box > button:last-child {
+    min-width: initial;
+    border: none;
+    border-radius: 0;
     padding: 0;
-    border: 0;
 }
 
-.StatusBar__item.envs_item > span {
-    display: grid;
-    place-items: center;
-    width: 100%;
+.StatusBar_system_options_item__icon {
+    fill: currentColor;
     height: 100%;
-    border-radius: inherit;
-}
-
-.StatusBar__item.envs_item > input {
-    display: none;
-}
-
-.StatusBar__item.envs_item > input:checked + span {
-    color: var(--brand-color-l-highest);
-    border: 2px solid currentColor;
-}
-
-.StatusBar__envs_box > label:last-child {
-    margin-right: auto;
-}
-
-.StatusBar__envs_box > label:first-child {
-    margin-left: 10px;
-}
-
-.StatusBar__system_options_box > li:first-child {
-    margin-left: auto;
-}
-
-.StatusBar__system_options_box > li:last-child {
-    margin-right: 10px;
-}
-
-.StatusBar__datetime_box {
-    flex-shrink: 0;
-    color: var(--secondary-color-l-base);
-    gap: calc(var(--StatusBar-gap) * 4);
-    font-size: 1em;
-    font-weight: 800;
-    letter-spacing: 1px;
+    aspect-ratio: 1;
 }
