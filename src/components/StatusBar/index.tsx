@@ -29,7 +29,7 @@ export const StatusBar: React.FC<StatusBarProps> = ({ className = '' }) => {
                 <button 
                     className={`StatusBar_system_options__item ${(plasmaBackgroundVisibility) ? '--active' : '--inactive'}`}
                     onClick={switchPlasmaBackgroundVisibility}
-                >Background: {plasmaBackgroundVisibility ? 'No' : 'Yes'}</button>
+                >Background: {plasmaBackgroundVisibility ? 'Yes' : 'No'}</button>
                 <button
                     className='StatusBar_system_options__item'
                     onClick={switchTheme}

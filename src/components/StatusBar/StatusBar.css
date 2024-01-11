@@ -2,11 +2,11 @@
     width: 100%;
 
     font-size: inherit;
-    padding: 0.25em 0;
+    padding: 0.5em 1em;
 
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
-    row-gap: .25em;
+    row-gap: 0.5em;
 
     background-color: var(--primary-color-l-high);
     border-radius: calc(var(--brand-border-radius) * 1);
@@ -26,13 +26,13 @@
 
 .StatusBar__title_box {
     justify-content: start;
-    padding-left: .5em;
+    font-weight: bold;
+    letter-spacing: 2px;
 }
 
 .StatusBar__system_options_box {
     height: 100%;
     justify-content: end;
-    padding-right: .5em;
 }
 
 .StatusBar__system_options_box > button {
@@ -47,10 +47,12 @@
     color: inherit;
     background-color: transparent;
 
-    border: 1px solid currentColor;
+    border: 2px solid currentColor;
     border-radius: calc(var(--brand-border-radius) * 1);
 
-    padding: 0 .5em;
+    outline-offset: 2.5px;
+
+    padding: 0.25em 0.5em;
     cursor: pointer;
 }
 

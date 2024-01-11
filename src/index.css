@@ -15,7 +15,6 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -270,4 +269,10 @@ body {
 
   display: grid;
   place-items: center;
+
+  background-color: hsl(
+    var(--primary-color-hue),
+    var(--primary-color-saturation),
+    var(--primary-color-lightness)
+  );
 }

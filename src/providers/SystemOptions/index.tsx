@@ -25,7 +25,7 @@ interface SystemOptionsProviderProps {
 };
 
 export const SystemOptionsProvider: React.FC<SystemOptionsProviderProps> = ({ children }) => {
-    const [plasmaBackgroundVisibility, setPlasmaBackgroundVisibility] = useState<boolean>(false);
+    const [plasmaBackgroundVisibility, setPlasmaBackgroundVisibility] = useState<boolean>(true);
     const [theme, switchTheme] = useTheme();
 
     const switchPlasmaBackgroundVisibility = () => {

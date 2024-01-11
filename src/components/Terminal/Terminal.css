@@ -8,10 +8,10 @@
     display: flex;
     flex-direction: column;
 
-    --Terminal-gap: 5px;
+    font-size: inherit;
 
-    padding: var(--Terminal-gap);
-    gap: var(--Terminal-gap);
+    padding: 0.5em;
+    gap: 0.25em;
 
     list-style: none;
 
@@ -19,12 +19,10 @@
     overflow-y: auto;
 }
 
-
 .TerminalInput {
-
     display: flex;
     flex-direction: row;
-    gap: calc(var(--Terminal-gap) / 2);
+    gap: 0.25em;
     width: 100%;
 
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
